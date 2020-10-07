@@ -31,14 +31,14 @@ class BaseAbstractModel(models.Model):
 
 class Product(BaseAbstractModel):
     main_image = models.ImageField(
-        default='',
-        upload_to='',
+        default='/product_images_main/default_main_photo.jpg/',
+        upload_to='product_images_main',
         verbose_name='Основное фото'
     )
     addentional_images = models.ImageField(
         null=True,
         blank=True,
-        upload_to='',
+        upload_to='product_images_addentional',
         verbose_name='Дополнительные фотографии'
     )
     description = models.CharField(
@@ -51,7 +51,7 @@ class Product(BaseAbstractModel):
         default=0,
         max_digits=11,
         decimal_places=2,
-        verbose_name='Старая цена'
+        verbose_name='Текущая цена'
     )
     new_price = models.DecimalField(
         default=0,
