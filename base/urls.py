@@ -9,6 +9,7 @@ urlpatterns = [
     path('', RedirectView.as_view(url='product/all/', permanent=False)),
     path('admin/', admin.site.urls),
     path('product/', include('product.urls')),
+    path('accounts/', include('allauth.urls')),
     # path('order/', include('product.urls')),
     # path('profile/', include('product.urls')),
 ]
