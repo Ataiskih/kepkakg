@@ -1,6 +1,7 @@
 from django import forms
 from product.models import (
-    Product, ProductCharacteristic
+    Product,
+    ProductCharacteristic
 )
 
 
