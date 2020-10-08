@@ -31,7 +31,7 @@ class BaseAbstractModel(models.Model):
 
 class Product(BaseAbstractModel):
     main_image = models.ImageField(
-        default='/product_images_main/default_main_photo.jpg/',
+        default='/product_images_main/default_main_photo.png/',
         upload_to='product_images_main',
         verbose_name='Основное фото'
     )

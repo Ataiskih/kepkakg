@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<br>
+<div class="container-fluid text-center bg-grey">
+    <div class="row text-center">
+    {% for product in object_list %}
+      <div class="col-sm-3">
+        <div class="thumbnail">
+            <a href="#">
+        {% if product.main_image %}
+          <img src="{{ product.main_image.url }}" width="150px">
+        {% endif %}
+    </a>
+    <a href="#">
+          <p><strong>{{ product.name }}</strong></p>
+        </a>
+          <p><strong>{{ product.old_price|floatformat:0 }} сом</strong></p>
+          <p>category</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+</div>
+{% endblock %}
