@@ -28,6 +28,8 @@ AUTHENTICATION_BACKENDS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'jet.dashboard',
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,12 +46,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
-    'django_extensions',
     'allauth.socialaccount.providers.instagram',
-    'allauth.socialaccount.providers.mailru',
-    'allauth.socialaccount.providers.telegram',
-    'allauth.socialaccount.providers.vk',
-    'allauth.socialaccount.providers.yandex',
+    'django_extensions',
 ]
 
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
@@ -85,7 +83,7 @@ ROOT_URLCONF = 'base.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

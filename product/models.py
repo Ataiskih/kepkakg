@@ -35,6 +35,13 @@ class Product(BaseAbstractModel):
         upload_to='product_images_main',
         verbose_name='Основное фото'
     )
+    vendor_code = models.CharField(
+        max_length=20,
+        unique=True,
+        blank=True,
+        null=True,
+        verbose_name='Артикул'
+    )
     addentional_images = models.ImageField(
         null=True,
         blank=True,
@@ -89,7 +96,7 @@ class Product(BaseAbstractModel):
 
     class Meta:
         verbose_name = "Товар"
-        verbose_name_plural = "товаров"
+        verbose_name_plural = "Товары"
         ordering = ["name"]
 
     def __str__(self):
@@ -137,5 +144,5 @@ class ProductCharacteristic(BaseAbstractModel):
 
         class Meta:
             verbose_name = "Характеристики товара"
-            verbose_name_plural = "Характеристики товар"
+            verbose_name_plural = "Характеристики товаров"
             ordering = ["name"]
