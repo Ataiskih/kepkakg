@@ -1,6 +1,38 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 {% load bootstrap4 %}
 {% block content %}
-{{ product.name }}
+<div class="row">
+    <div class="col-lg-3 col-md-6 col-sm-12">
+        {% if product.main_image.url%}
+            <img src="{{ product.main_image.url }}" class="left" width="200px">
+        {% endif %}
+    </div>
+        <div class="col-lg-9 col-md-6 col-sm-12">
+            <h4>{{ product.name }} - 
+                {% if product.availability_in_store %}
+                    <button class="btn btn-sm btn-success">Есть в наличии</button>
+                {% else %}
+                    <button class="btn btn-warning">Под заказ</button>
+                {% endif %}</h4>
+            <h4>{{ product.old_price }} сом</h4>
+            <div>
+                Описание товара: {{ product.description|linebreaks }}
+                <br>
+            </div>
+            <div> 
+                Категории: 
+            </div>
+        </div>
+</div>
+<div>
+    Описание товара:
 
+Бейсбо́лка — спортивный головной убор, кепка особого фасона с большим козырьком и высокой тульей[1], первоначально у бейсболистов.Описание товара:
+
+Бейсбо́лка — спортивный головной убор, кепка особого фасона с большим козырьком и высокой тульей[1], первоначально у бейсболистов.Описание товара:
+
+Бейсбо́лка — спортивный головной убор, кепка особого фасона с большим козырьком и высокой тульей[1], первоначально у бейсболистов.Описание товара:
+
+Бейсбо́лка — спортивный головной убор, кепка особого фасона с большим козырьком и высокой тульей[1], первоначально у бейсболистов.
+</div>
 {% endblock %}

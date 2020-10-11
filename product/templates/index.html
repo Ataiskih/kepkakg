@@ -16,7 +16,7 @@
 <body>
     <!-- Header -->
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <a href="#" class="navbar-brand">КепкаKG</a>
+        <a href="{% url 'product' %}" class="navbar-brand">КепкаKG</a>
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -57,12 +57,12 @@
                         </a>
                     </div>
                   </li>
-                      <a href="#" class="nav-link d-inline">Выйти?</a>
+                      <a href="{% url 'account_logout' %}" class="nav-link d-inline">Выйти?</a>
                   {% else %}
                       <a href="#" class="nav-link d-inline">
                         Привет, Гость
                       </a> 
-                      <a href="#" class="nav-link d-inline">Войти?</a>
+                      <a href="{% url 'account_login' %}" class="nav-link d-inline">Войти?</a>
 
                   {% endif %}
               </form>
@@ -78,7 +78,9 @@
         </div>
             <!-- Main info -->
         <div class="col-lg-7 col-md-8 col-sm-12">
+            <br>
             {% block content %}{% endblock %}
+            <br>
         </div>
         <!-- Right block empty -->
         <div class="col-lg-1 col-md-1 col-sm-12">

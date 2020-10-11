@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 {% load bootstrap4 %}
 {% block content %}
 <br>
@@ -12,7 +12,7 @@
           <img src="{{ product.main_image.url }}" width="150px">
         {% endif %}
     </a>
-    <a href="#">
+    <a href="{% url 'product_detail' product.id %}">
           <p><strong>{{ product.name }}</strong></p>
         </a>
           <p><strong>{{ product.old_price|floatformat:0 }} сом</strong></p>
