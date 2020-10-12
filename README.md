@@ -1,5 +1,5 @@
 # kepkakg
-1. https://github.com/Ataiskih/kepkakg.git
+1. git clone https://github.com/Ataiskih/kepkakg.git
 2. cd kepkakg
 3. Linux: sourse env/bin/activate 
    Windows: call env/bin/activate 
