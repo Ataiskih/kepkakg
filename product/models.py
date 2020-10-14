@@ -42,12 +42,6 @@ class Product(BaseAbstractModel):
         null=True,
         verbose_name='Артикул'
     )
-    addentional_images = models.ImageField(
-        null=True,
-        blank=True,
-        upload_to='product_images_addentional',
-        verbose_name='Дополнительные фотографии'
-    )
     description = models.CharField(
         max_length=5000,
         null=True,
@@ -103,7 +97,21 @@ class Product(BaseAbstractModel):
         return self.name
 
 
-class ProductCharacteristic(BaseAbstractModel):
+class ProductAdditionalImages(models.Model):
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name='product_additional_images'
+    )
+    addentional_images = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to='product_images_addentional',
+        verbose_name='Дополнительные фотографии'
+    )
+
+
+class ProductCharacteristic(models.Model):
         product = models.ForeignKey(
             Product,
             on_delete=models.SET_NULL,
@@ -118,17 +126,18 @@ class ProductCharacteristic(BaseAbstractModel):
             verbose_name='Материал'
         )
         CHOOSE_SIZE = (
-            (1, 'Extra Small - XS'),
-            (2, 'Small - S'),
-            (3, 'Medium - M'),
-            (4, 'Large - L'),
-            (5, 'Extra Large - XL'),
-            (6, 'Double Large - XXL'),
-            (7, 'Triple Large - XXXL')
+            (1, 'XS'),
+            (2, 'S'),
+            (3, 'M'),
+            (4, 'L'),
+            (5, 'XL'),
+            (6, 'XXL'),
+            (7, 'XXXL'),
+            (8, 'Все размеры XS - XXXL'),
         )
         size = models.IntegerField(
             choices=CHOOSE_SIZE,
-            default=1,
+            default=8,
             verbose_name='Размеры'
         )
         color = models.CharField(
@@ -138,11 +147,8 @@ class ProductCharacteristic(BaseAbstractModel):
             verbose_name='Цвет'
         )
 
-        def __str__(self):
-            return self.name
-
 
         class Meta:
             verbose_name = "Характеристики товара"
             verbose_name_plural = "Характеристики товаров"
-            ordering = ["name"]
+

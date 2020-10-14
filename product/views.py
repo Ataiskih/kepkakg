@@ -7,6 +7,7 @@ from django.views.generic import (
 from product.models import(
     Product,
     ProductCharacteristic,
+    ProductAdditionalImages,
 )
 
 
@@ -32,3 +33,16 @@ class ProductListView(ListView):
 class ProductDetailView(DetailView):
     template_name = 'product/product.html'
     model = Product
+
+    def get_context_data(self, **kwargs):
+        pk = self.kwargs["pk"]
+        product = Product.objects.get(pk=pk)
+        context = super().get_context_data(**kwargs)
+        context['product'] = Product.objects.get(pk=pk)
+        context['add_images'] = ProductAdditionalImages.objects.filter(
+            product=product
+        )
+        context['all_characteristic'] = ProductCharacteristic.objects.filter(
+            product=product
+        )
+        return context

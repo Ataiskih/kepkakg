@@ -4,7 +4,9 @@
 <div class="row">
     <div class="col-lg-3 col-md-6 col-sm-12">
         {% if product.main_image.url%}
-            <img src="{{ product.main_image.url }}" class="left" width="200px">
+            <div>
+                <img src="{{ product.main_image.url }}" width="200px">
+            </div>
         {% endif %}
     </div>
         <div class="col-lg-9 col-md-6 col-sm-12">
@@ -16,23 +18,32 @@
                 {% endif %}</h4>
             <h4>{{ product.old_price }} сом</h4>
             <div>
-                Описание товара: {{ product.description|linebreaks }}
-                <br>
+                <b> 
+                    Описание товара: 
+                </b>
+                {{ product.description|linebreaks }}
             </div>
-            <div> 
-                Категории: 
-            </div>
+            
+            {% for ch in all_characteristic %}
+                <div>
+                    Цвет: {{ ch.color }}
+                </div> 
+                <div> 
+                    Размеры: {{ ch.size }}
+                </div>
+                <div>
+                    Матприал: {{ ch.material }}
+                </div> 
+            {% endfor %}
+                <div> 
+                    Категория товара: 
+                </div>
         </div>
 </div>
 <div>
-    Описание товара:
+    {% for add_image in add_images %}
+        <img src="{{ add_image.addentional_images.url }}" width="200px">
+    {% endfor %}
 
-Бейсбо́лка — спортивный головной убор, кепка особого фасона с большим козырьком и высокой тульей[1], первоначально у бейсболистов.Описание товара:
-
-Бейсбо́лка — спортивный головной убор, кепка особого фасона с большим козырьком и высокой тульей[1], первоначально у бейсболистов.Описание товара:
-
-Бейсбо́лка — спортивный головной убор, кепка особого фасона с большим козырьком и высокой тульей[1], первоначально у бейсболистов.Описание товара:
-
-Бейсбо́лка — спортивный головной убор, кепка особого фасона с большим козырьком и высокой тульей[1], первоначально у бейсболистов.
 </div>
 {% endblock %}
