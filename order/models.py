@@ -26,8 +26,11 @@ class OrderList(BaseAbstractModel):
     )
     complete = models.BooleanField(default=False)
 
-    def __str__(self):
-        return str(self.id)
+    @property
+    def get_cart_total(self):
+        order_items = self.order_item.all()
+        total = sum([item.get_total for item in order_items])
+        return self.total
 
 
 class OrderItem(BaseAbstractModel):
@@ -42,6 +45,11 @@ class OrderItem(BaseAbstractModel):
         related_name="order_item"
     )
     quantity = models.IntegerField(default=1)
+
+    @property
+    def get_total(self):
+        total = self.product.new_price * self.quantity
+        return self.total
 
 
 class Shipping(models.Model):
@@ -64,6 +72,3 @@ class Shipping(models.Model):
         max_length=255,
         null=True, blank=True
     )
-
-    def __str__(self):
-        return self.address

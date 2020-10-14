@@ -12,7 +12,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('product/', include('product.urls')),
     path('accounts/', include('allauth.urls')),
-    # path('order/', include('product.urls')),
+    path('order/', include('order.urls')),
     # path('profile/', include('product.urls')),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

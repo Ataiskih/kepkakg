@@ -14,7 +14,7 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(OrderList)
 class OrderListAdmin(admin.ModelAdmin):
-    list_display = ["customer", "complete", "created"]
+    list_display = ["id", "customer", "complete", "created"]
 
 
 @admin.register(OrderItem)
