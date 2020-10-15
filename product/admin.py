@@ -17,6 +17,7 @@ class ProductCharacteristicAdminInline(admin.TabularInline):
     fields = ['material', 'size', 'color']
     extra = 0
 
+
 @admin.register(Product)
 class ProductAdminForm(admin.ModelAdmin):
     exclude = ('updated',)
@@ -24,8 +25,3 @@ class ProductAdminForm(admin.ModelAdmin):
         ProductAdditionalImagesAdminInline,
         ProductCharacteristicAdminInline,
     ]
-    
-
-# @admin.register(ProductCharacteristic)
-# class ProductAdminForm(admin.ModelAdmin):
-#     list_display = ['material', 'size', 'color']
