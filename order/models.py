@@ -29,7 +29,7 @@ class OrderList(BaseAbstractModel):
     @property
     def get_cart_total(self):
         order_items = self.order_item.all()
-        total = sum([item.get_total for item in order_items])
+        total = sum([item.get_item_total for item in order_items])
         return self.total
 
 
@@ -47,7 +47,7 @@ class OrderItem(BaseAbstractModel):
     quantity = models.IntegerField(default=1)
 
     @property
-    def get_total(self):
+    def get_item_total(self):
         total = self.product.new_price * self.quantity
         return self.total
 
