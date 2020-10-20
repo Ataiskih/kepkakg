@@ -153,6 +153,8 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
 STATICFILES_DIRS = [
     BASE_DIR / 'templates/static/',
+    BASE_DIR / 'product/static/',
+    BASE_DIR / 'user_profiles/static/',
 ]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
