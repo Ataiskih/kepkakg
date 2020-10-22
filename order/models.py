@@ -32,6 +32,11 @@ class OrderList(BaseAbstractModel):
         total = sum([item.get_item_total for item in order_items])
         return self.total
 
+	@property
+	def get_items_count(self):
+		order_items = self.orderitem.all()
+		total = sum([item.quantity for item in orderitems])
+		return total 
 
 class OrderItem(BaseAbstractModel):
     product = models.ForeignKey(

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page %}
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="box-element" id="form-wrapper">
+            <form id="form">
+                <div id="user-info">
+                    <div class="form-field">
+                        <input required class="form-control" type="text" name="name" placeholder="Имя">
+                    </div>
+                    <div class="form-field">
+                        <input required class="form-control" type="email" name="email" placeholder="Email">
+                    </div>
+                </div>
+                
+                <div id="shipping-info">
+                    <hr>
+                    <p>Оформить доставку:</p>
+                    <hr>
+                    <div class="form-field">
+                        <input class="form-control" type="text" name="address" placeholder="Адрес">
+                    </div>
+                    <div class="form-field">
+                        <input class="form-control" type="text" name="note" placeholder="Примечание">
+                    </div>
+                </div>
+
+                <hr>
+                <input id="form-button" class="btn btn-success btn-block" type="submit" value="Заказать">
+            </form>
+        </div>
+
+        <br>
+        <div class="box-element hidden" id="payment-info">
+            <small>Paypal Options</small>
+            <button id="make-payment">Оплатить</button>
+        </div>
+        
+    </div>
+
+    <div class="col-lg-6">
+        <div class="box-element">
+            <a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+            <hr>
+            <h3>Order Summary</h3>
+            <hr>
+            {% for item in items %}
+            <div class="cart-row">
+                <div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
+                <div style="flex:2"><p>{{item.product.name}}</p></div>
+                <div style="flex:1"><p>{{item.product.price|floatformat:2}}</p></div>
+                <div style="flex:1"><p>x{{item.quantity}}</p></div>
+            </div>
+            {% endfor %}
+            <h5>Total:   ${{order.get_cart_total|floatformat:2}}</h5>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascripts">
+    var shipping = '{{order.shipping}}'
+
+    var form = document.getElementById('form')
+    form.addEventListener('submit', function(e){
+        e.preventDefault()
+        console.log('Form.submitted')
+        documet.getElementById('form-button').classlist.add('hidden')
+        documet.getElementById('payment-info').classlist.add('hidden')
+    })
+
+    document.getElementById('make-payment').addEventListener('click', function(e))
+
+    function submitFormDate(){
+        console.log('Payment button clicked')
+    }
+</script>
+
+{% endblock %}
