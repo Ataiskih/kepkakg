@@ -12,3 +12,13 @@ To Do List - https://trello.com/b/XpdC6n2u/todolist-kepkakg
 6. python manage.py migrate
 7. to runserver: python manage.py runserver_plus 8001 --cert-file /tmp/cert
 8. In broweser URL paste: https://127.0.0.1:8001
+
+COMMANDS
+git branch
+git checkout your_branch
+    git add .
+    git commit -m ""
+    git push -u origin your_branch
+git checkout master
+git pull
+git merge your_branch
