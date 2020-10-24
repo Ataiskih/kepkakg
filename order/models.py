@@ -30,7 +30,7 @@ class OrderList(BaseAbstractModel):
     def get_cart_total(self):
         order_items = self.order_item.all()
         total = sum([item.get_item_total for item in order_items])
-        return self.total
+        return total
 
 	@property
 	def get_items_count(self):
@@ -54,7 +54,7 @@ class OrderItem(BaseAbstractModel):
     @property
     def get_item_total(self):
         total = self.product.new_price * self.quantity
-        return self.total
+        return total
 
 
 class Shipping(models.Model):

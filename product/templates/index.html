@@ -38,6 +38,34 @@
       return cookieValue;
     }
     var csrftoken = getToken('csrftoken')
+
+    function getCookie(name) {
+      // Разделяем строку cookie получаем все отдельные пары имя = значение в массиве
+      var cookieArr = document.cookie.split(";");
+
+      // Перебираем элементы массива
+      for(var i = 0; i < cookieArr.length; i++) {
+        var cookiePair = cookieArr[i].split("=");
+
+        /* Удаление пробелов в начале имени файла cookie
+         и сравниваем == его с заданной строкой */
+        if(name == cookiePair[0].trim()) {
+          // Расшифровываем значение cookie и возвращаем
+          return decodeURIComponent(cookiePair[1]);
+        }
+      }
+
+      // Вернуть null если не найден
+      return null;
+    }
+  	var cart = JSON.parse(getCookie('cart')) // cart используется в cart.js 48
+
+    if (cart == undefined){
+      cart = {}
+      console.log('Cart was created!', cart)
+      document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+    }
+    console.log('Cart:', cart)
     </script>
 </head>
 
