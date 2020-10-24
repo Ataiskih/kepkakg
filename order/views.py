@@ -7,37 +7,22 @@ from .utils import *
 
 
 def cart(request):
-
-	if request.user.is_authenticated:
-		customer = request.user.customer
-		order_list, created = OrderList.objects.get_or_create(customer=customer, complete=False)
-		items = order_list.order_item.all()
-		cartItems = order_list.get_items_count
-	else:
-		cookieData = cookieCart(request)
-		cartItems = cookieData('cartItems')
-		order_list = cookieData('order_list')
-		items = cookieData('items')
+	data = cartData(request)
+	cartItems = data('cartItems')
+	order_list = data('order_list')
+	items = data('items')
 
 	context = {'items':items, 'order_list':order_list, 'cartItems':cartItems}
 	return render(request, 'order/cart.html', context)
 
 
 def checkout(request):
-    context = {}
-    if request.user.is_authentiated:
-        customer = request.user.customer
-        order_list, created = OrderList.objects.get_or_create(customer=customer, complete=False)
-        items = order_list.order_item.all()
-        items_count = order_list.get_items_count
-    else:
-        cookieData = cookieCart(request)
-		cartItems = cookieData('cartItems')
-		order_list = cookieData('order_list')
-		items = cookieData('items')
+	data = cartData(request)
+	cartItems = data('cartItems')
+	order_list = data('order_list')
+	items = data('items')
 
-    context["items"] = items
-    context["order_list"] = order_list
+	context = {'items':items, 'order_list':order_list, 'cartItems':cartItems}
 
     return render(request, "product/checkout.html", context)
 
@@ -69,17 +54,27 @@ def updateItem(request):
 
 
 def processOrder(request):
-	data = json.loads(request.body) # checkout.html 140
+	data = json.loads(request.body) # checkout.html 114
 
 	if request.user.is_authenticated:
 		customer = request.user.customer
 		order_list, created = OrderList.objects.get_or_create(customer=customer, complete=False)
-		total = float(data['form']['total']) # checkout.html 108 строка
-
-		if total == order_list.get_cart_total:
-			order_list.complete = True
-			order_list.save()
 	else:
-		print('User is not logged in')
+		customer, order_list = guestOrder(request, data)
+
+	total = float(data['form']['total']) # checkout.html 100 строка
+
+	if total == order_list.get_cart_total:
+		order_list.complete = True
+	order_list.save()
+
+	order_list.shipping = Shipping.objects.create(
+		customer=customer,
+		order_list=order_list,
+		address=data['shipping']['address'],
+		note=data['shipping']['note']
+		)
+else:
+		
 
 	return JsonResponse('Payment submitted..', safe=False)

@@ -47,4 +47,30 @@ def cartData(request):
 		order_list = cookieData('order_list')
 		items = cookieData('items')
 
-        return {'cartItems':cartItems, 'order_list':order_list, 'items':items}
+    return {'cartItems':cartItems, 'order_list':order_list, 'items':items}
+
+
+def guestOrder(request, data): # guest checkout function
+	name = data['form']['name']
+	email = data['form']['email']
+
+	cookieData = cookieCart(request)
+	items = cookieData['items']
+
+	customer, created = Customer.objects.get_or_create(email=email)
+	customer.name = name
+	customer.save()
+
+	order_list = OrderList.objects.create(
+		customer=customer,
+		complete=False,
+		)
+
+	for item in items:
+		product = Product.objects.get(id=item['id'])
+		order_item = OrderItem.objects.create(
+			product=product,
+			order_list=order_list,
+			quantity=item['quantity'],
+		)
+	return customer, order_list
