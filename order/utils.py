@@ -50,7 +50,7 @@ def cartData(request):
     return {'cartItems':cartItems, 'order_list':order_list, 'items':items}
 
 
-def guestOrder(request, data): # guest checkout function
+def guestOrder(request, data): # для guests
 	name = data['form']['name']
 	email = data['form']['email']
 

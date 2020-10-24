@@ -2,19 +2,20 @@ from django.contrib import admin
 from .models import *
 
 
-class OrderListInLine(admin.TabularInline):
-    model = OrderList
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 0
 
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ["name", "phone_number", "email"]
-    inlines = [OrderListInLine]
+    list_display = ["user", "name", "phone_number", "email"]
 
 
 @admin.register(OrderList)
 class OrderListAdmin(admin.ModelAdmin):
     list_display = ["id", "customer", "complete", "created"]
+    inlines = [OrderItemInline]
 
 
 @admin.register(OrderItem)
