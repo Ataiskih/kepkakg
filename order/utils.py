@@ -33,3 +33,18 @@ def cookieCart(request):
             pass # если продукта по каким-то причинам нет в бд, ошибка выдаваться не будет
     
     return {'cartItems':cartItems, 'order_list':order_list, 'items':items}
+
+
+def cartData(request):
+    if request.user.is_authenticated:
+		customer = request.user.customer
+		order_list, created = OrderList.objects.get_or_create(customer=customer, complete=False)
+		items = order_list.order_item.all()
+		cartItems = order_list.get_items_count
+	else:
+		cookieData = cookieCart(request)
+		cartItems = cookieData('cartItems')
+		order_list = cookieData('order_list')
+		items = cookieData('items')
+
+        return {'cartItems':cartItems, 'order_list':order_list, 'items':items}
