@@ -69,13 +69,14 @@
                                 <div class="tab-content">
                             <!-- Personal panes --> 
                                     <div role="tabpanel" class="tab-pane active" id="home">
-                                        <form method="POST">
+                                        <form method="POST" name='q' enctype="multipart/form-data">
                                             {% csrf_token %}
                                             <div class="form-group">
                                                 <label for="inputName">
                                                     Ник
                                                 </label>
                                                 <input 
+                                                    name="username"
                                                     type="text" 
                                                     class="form-control" id="inputName" 
                                                     placeholder="Ваш ник" 
@@ -87,6 +88,7 @@
                                                     Имя
                                                 </label>
                                                 <input 
+                                                    name="first_name"
                                                     type="text" 
                                                     class="form-control" 
                                                     id="inputName" 
@@ -99,6 +101,7 @@
                                                     Фамилия
                                                 </label>
                                                 <input 
+                                                    name="last_name"
                                                     type="text" 
                                                     class="form-control" 
                                                     id="inputLastName" 
@@ -110,7 +113,8 @@
                                                 <label for="exampleInputEmail1">
                                                     Пол
                                                 </label>
-                                                <input 
+                                                <input
+                                                    name="gender" 
                                                     type="text" 
                                                     class="form-control" 
                                                     id="exampleInputEmail1" 
@@ -123,6 +127,7 @@
                                                     Дата рождения
                                                 </label>
                                                 <input 
+                                                    name="birthday"
                                                     type="text" 
                                                     class="form-control" 
                                                     id="exampleInputEmail1" 
@@ -135,6 +140,7 @@
                                                     Email
                                                 </label>
                                                 <input 
+                                                    name="new_email"
                                                     type="email" 
                                                     class="form-control" 
                                                     id="exampleInputEmail1" 
@@ -147,6 +153,7 @@
                                                     Номер телефона
                                                 </label>
                                                 <input 
+                                                    name="phone"
                                                     type="text" 
                                                     class="form-control" 
                                                     id="exampleInputEmail1" 
@@ -167,6 +174,7 @@
                             <!-- Adress panes --> 
                                     <div role="tabpanel" class="tab-pane" id="profile">
                                         <form action="#">
+
                                             <div class="form-group">
                                                 <label for="inputName">
                                                     Город
