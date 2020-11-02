@@ -9,6 +9,8 @@ from product.models import(
     ProductCharacteristic,
     ProductAdditionalImages,
 )
+from product.forms import Category,CategoryCreateForm
+from feedback.forms import FeedBackForm,FeedBack
 
 
 # main page (all products page)
@@ -46,3 +48,8 @@ class ProductDetailView(DetailView):
             product=product
         )
         return context
+
+def category(request, pk):
+    context = {}
+    context["category_pk"] = pk
+    return render(request, "product/index.html", context)

@@ -60,6 +60,15 @@ class Product(BaseAbstractModel):
         verbose_name='Магазины'
     )
 
+    category = models.ForeignKey(
+        to="Category",
+        on_delete=models.SET_NULL,
+        related_name="product",
+        null=True,
+        blank=True,
+        verbose_name="Категория"
+    )
+
 
     class Meta:
         verbose_name = "Товар"
@@ -124,4 +133,16 @@ class ProductCharacteristic(models.Model):
         class Meta:
             verbose_name = "Характеристики товара"
             verbose_name_plural = "Характеристики товаров"
+
+
+class Category(models.Model):
+    name = models.CharField(
+        max_length=255, verbose_name="Название")
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "категория"
+        verbose_name_plural = "Категории"
 

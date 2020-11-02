@@ -28,7 +28,7 @@ class FeedBack(models.Model):
     phone = models.CharField(
         max_length=255,
         null=True, blank=True,
-        verbose_name="Номер телефона"
+        verbose_name="Телефон"
     )
 
     email = models.EmailField(

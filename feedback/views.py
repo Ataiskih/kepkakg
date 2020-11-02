@@ -11,9 +11,9 @@ def feedback(request):
         feedback.save()
         context["message"] = "Ваше обращение принято, спасибо!"
         context["type"] = "success"
-        return render(request, "kepkakg/templates/account/base.html", context)
+        return render(request, "product/templates/index.html", context)
 
     context["message"] = "Форма заполнена неверно!"
     context["type"] = "warning"
-    return render(request, "kepkakg/templates/account/base.html", context)
+    return render(request, "product/templates/index.html", context)
 

@@ -114,7 +114,26 @@
               <div>
                 Тут будут категории товаров
               </div>
-        </div>
+              <div>
+                {% block page %}
+                <div class="row">
+                    <div class="col-lg-3 col-md-2">         
+                      <h4 class="alert alert-success">Помогите стать лучше!</h4>
+                      <div class="container-fluid">
+                        <h6>Будем рады услышать ваши отзывы и предложения!</h6>
+                        <form action="{% url 'feedback' %}" method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          {% bootstrap_form feedback_form %}
+                          <button class="btn btn-info">
+                            Отправить
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                </div>
+                {% endblock %}
+            </div>
+        </div>       
             <!-- Main info -->
         <div class="col-lg-7 col-md-8 col-sm-12">
             <br>
