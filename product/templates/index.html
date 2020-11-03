@@ -74,66 +74,37 @@
         <div class="col-lg-1 col-md-1 col-sm-12">
         </div>
         <!-- block categories -->
-        <div class="col-lg-3 col-md-2 col-sm-12">
-              <div>
-                Тут будут категории товаров
-              </div>
-              <div>
-                Тут будут категории товаров
-              </div>
-              <div>
-                Тут будут категории товаров
-              </div>
-              <div>
-                Тут будут категории товаров
-              </div>
-              <div>
-                Тут будут категории товаров
-              </div>
-              <div>
-                Тут будут категории товаров
-              </div>
-              <div>
-                Тут будут категории товаров
-              </div>
-              <div>
-                Тут будут категории товаров
-              </div>
-              <div>
-                Тут будут категории товаров
-              </div>
-              <div>
-                Тут будут категории товаров
-              </div>
-              <div>
-                Тут будут категории товаров
-              </div>
-              <div>
-                Тут будут категории товаров
-              </div>
-              <div>
-                Тут будут категории товаров
-              </div>
-              <div>
-                {% block page %}
-                <div class="row">
-                    <div class="col-lg-3 col-md-2">         
-                      <h4 class="alert alert-success">Помогите стать лучше!</h4>
-                      <div class="container-fluid">
-                        <h6>Будем рады услышать ваши отзывы и предложения!</h6>
-                        <form action="{% url 'feedback' %}" method="POST" enctype="multipart/form-data">
-                          {% csrf_token %}
-                          {% bootstrap_form feedback_form %}
-                          <button class="btn btn-info">
-                            Отправить
-                          </button>
-                        </form>
-                      </div>
+        <div>
+          {% block page %}
+          <div class="row">
+              <div class="col-lg-3 col-md-2">
+                <div class="list-group">
+                  {% for category in categories %}
+                    <div    
+                      class="list-group-item d-flex justify-content-between
+                        {% if category.id == category_pk %}
+                        list-group-item-info
+                        {% endif %}
+                        ">
+                        <a href="{% url 'category' category.id %}">{{ category.name }}</a>
                     </div>
+                  {% endfor %}
                 </div>
-                {% endblock %}
+                <br>          
+                <h4 class="alert alert-success">Помогите стать лучше лучше!</h4>
+                <div class="container-fluid">
+                  <form action="{% url 'feedback' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% bootstrap_form feedback_form %}
+                    <button class="btn btn-info">
+                      Отправить
+                    </button>
+                  </form>
+                </div>
+              </div>
             </div>
-        </div>       
+            {% endblock %}
+        </div>
             <!-- Main info -->
         <div class="col-lg-7 col-md-8 col-sm-12">
             <br>
