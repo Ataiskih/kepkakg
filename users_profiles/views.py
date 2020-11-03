@@ -10,7 +10,7 @@ from users_profiles.forms import UserForm
 
 class ProfileUpdate(LoginRequiredMixin, UpdateView):
     model = UserProfile
-    template_name = 'user_profiles/copy_profiles.html'
+    template_name = 'user_profiles/profiles.html'
     success_url = '/'
     fields = '__all__'
     context_object_name = 'profile'

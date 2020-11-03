@@ -2,8 +2,8 @@
 {% load bootstrap4 %}
 {% block content %}
 {% load static %}
-{% if request.user.is_authenticated and request.user == user %}
-    {% for profile in object_list %}
+{% if request.user.is_authenticated or request.user == user %}
+    
         <link rel="stylesheet" href="{% static 'css/bro.css' %}">
         <div class="container"> 
             <div class="col-md-12">  
@@ -12,15 +12,16 @@
                         <div class="profile-userpic">
                             <img src="{{ profile.avatar.url }}" class="img-responsive" alt=""> </div>
                         <div class="profile-usertitle">
-                            <div class="profile-usertitle-name"> {{ profile.user.first_name }} 
-                                {{ profile.user.last_name }} 
+                            <div class="profile-usertitle-name"> {{ user.first_name }} 
+                                {{ user.last_name }} 
                             </div>
-                            <div class="profile-usertitle-job"> Developer </div>
+                            <div class="profile-usertitle-job"> 
+                                {{ user.username }} 
+                            </div>
                         </div>
                         <div class="profile-userbuttons">
-                            <button type="file" class="btn btn-info  btn-sm">Сменить фото</button>
-                            <button type="button" class="btn btn-info  btn-sm">Сообщение</button>
-                            <input type="file" id="exampleInputFile">
+                            <button type="file" class="btn btn-info  btn-sm">Сообщение</button>
+                            <input type="file"  value="Отправить" id="exampleInputFile">
                         </div>
                     <br>
                     <br>
@@ -80,7 +81,7 @@
                                                     type="text" 
                                                     class="form-control" id="inputName" 
                                                     placeholder="Ваш ник" 
-                                                    value="{{ profile.user.username }}"
+                                                    value="{{ user.username }}"
                                                 >
                                             </div>
                                             <div class="form-group">
@@ -93,7 +94,7 @@
                                                     class="form-control" 
                                                     id="inputName" 
                                                     placeholder="Ваше имя"
-                                                    value="{{ profile.user.first_name }}"
+                                                    value="{{ user.first_name }}"
                                                 >
                                             </div>
                                             <div class="form-group">
@@ -106,7 +107,20 @@
                                                     class="form-control" 
                                                     id="inputLastName" 
                                                     placeholder="Ваша фамилия"
-                                                    value="{{ profile.user.last_name }}"
+                                                    value="{{ user.last_name }}"
+                                                >
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">
+                                                    Email
+                                                </label>
+                                                <input 
+                                                    name="new_email"
+                                                    type="email" 
+                                                    class="form-control" 
+                                                    id="exampleInputEmail1" 
+                                                    placeholder="Ваш Email"
+                                                    value="{{ user.email }}"
                                                 >
                                             </div>
                                             <div class="form-group">
@@ -136,17 +150,6 @@
                                                 >
                                             </div>
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">
-                                                    Email
-                                                </label>
-                                                <input 
-                                                    name="new_email"
-                                                    type="email" 
-                                                    class="form-control" 
-                                                    id="exampleInputEmail1" 
-                                                    placeholder="Ваш Email"
-                                                    value="{{ profile.user.email }}"
-                                                >
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">
@@ -157,7 +160,7 @@
                                                     type="text" 
                                                     class="form-control" 
                                                     id="exampleInputEmail1" 
-                                                    placeholder="Ваш Email"
+                                                    placeholder="Ваш номер телефона"
                                                     value="{{ profile.phone }}"
                                                 >
                                             </div>
@@ -255,6 +258,6 @@
                 </div>
             </div>
         </div>
-    {% endfor %}
+    
 {% endif %}
 {% endblock %}
