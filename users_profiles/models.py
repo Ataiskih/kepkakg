@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from base.models import BaseAbstractModel
+from autoslug import AutoSlugField
 User = get_user_model()
 
 
@@ -62,6 +63,10 @@ class UserProfile(models.Model):
         null=True,
         blank=True,
         verbose_name='Дополнительный адрес',
+    )
+    slug = AutoSlugField(
+        populate_from='user',
+        default='user',
     )
 
 
