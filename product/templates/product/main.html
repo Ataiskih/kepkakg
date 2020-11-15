@@ -7,16 +7,15 @@
     {% for product in object_list %}
       <div class="col-sm-3">
         <div class="thumbnail">
-            <a href="#">
+          <a href="{% url 'product_detail' product.id %}">
         {% if product.main_image %}
           <img src="{{ product.main_image.url }}" width="150px">
         {% endif %}
-    </a>
-    <a href="{% url 'product_detail' product.id %}">
+          </a>
+        <a href="{% url 'product_detail' product.id %}">
           <p><strong>{{ product.name }}</strong></p>
         </a>
           <p><strong>{{ product.old_price|floatformat:0 }} сом</strong></p>
-          <p>category</p>
         </div>
       </div>
       {% endfor %}

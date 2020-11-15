@@ -1,59 +1,59 @@
 from django.db import models
 from django.contrib.auth.models import User
+from product.models import Product
 
-from product.models import BaseAbstractModel, Product
 
-
-class Customer(BaseAbstractModel):
+class Customer(models.Model):
     user = models.OneToOneField(
-        to=User,
-        null=True, blank=True,
-        on_delete=models.CASCADE,
-    )
-    phone_number = models.CharField(max_length=20)
+        to=User, null=True,
+        blank=True,
+        on_delete=models.CASCADE
+        )
+    name = models.CharField(max_length=255, null=True)
+    phone_number = models.CharField(max_length=30)
     email = models.EmailField(max_length=255)
 
     def __str__(self):
         return self.name
 
-
-class OrderList(BaseAbstractModel):
+class Order(models.Model):
     customer = models.ForeignKey(
         to=Customer,
         null=True, blank=True,
-        on_delete=models.SET_NULL,
-        related_name="order_list"
-    )
+        on_delete=models.SET_NULL
+        )
     complete = models.BooleanField(default=False)
+    order_date = models.DateTimeField(auto_now_add=True)
 
     @property
     def get_cart_total(self):
-        order_items = self.order_item.all()
-        total = sum([item.get_item_total for item in order_items])
+        orderitems = self.orderitem_set.all()
+        total = sum([item.get_total for item in orderitems])
+        return total
+    
+    @property
+    def get_cart_items(self):
+        orderitems = self.orderitem_set.all()
+        total = sum([item.quantity for item in orderitems])
         return total
 
-	@property
-	def get_items_count(self):
-		order_items = self.orderitem.all()
-		total = sum([item.quantity for item in orderitems])
-		return total 
 
-class OrderItem(BaseAbstractModel):
+class OrderItem(models.Model):
     product = models.ForeignKey(
         to=Product,
-        on_delete=models.CASCADE,
-        related_name="order_item"
-    )
-    order_list = models.ForeignKey(
-        to=OrderList,
-        on_delete=models.CASCADE,
-        related_name="order_item"
-    )
-    quantity = models.IntegerField(default=1)
+        null=True,
+        on_delete=models.SET_NULL
+        )
+    order = models.ForeignKey(
+        to=Order,
+        null=True,
+        on_delete=models.SET_NULL
+        )
+    quantity = models.IntegerField(default=0)
 
     @property
-    def get_item_total(self):
-        total = self.product.new_price * self.quantity
+    def get_total(self):
+        total = self.product.old_price * self.quantity
         return total
 
 
@@ -61,18 +61,14 @@ class Shipping(models.Model):
     customer = models.ForeignKey(
         to=Customer,
         null=True, blank=True,
-        on_delete=models.SET_NULL,
-        related_name="shipping"
-    )
-    order_list = models.ForeignKey(
-        to=OrderList,
-        on_delete=models.CASCADE,
-        related_name="shipping"
-    )
-    address = models.CharField(
-        max_length=255,
-        null=True, blank=True
-    )
+        on_delete=models.SET_NULL
+        )
+    order = models.ForeignKey(
+        to=Order,
+        null=True,
+        on_delete = models.SET_NULL
+        )
+    address = models.CharField(max_length=255, null=True)
     note = models.CharField(
         max_length=255,
         null=True, blank=True

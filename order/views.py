@@ -2,29 +2,29 @@ from django.shortcuts import render
 from django.http import JsonResponse
 import json
 
-from .models import *
-from .utils import *
+from order.models import *
+from order.utils import cartData, guestOrder
+from product.models import Product
 
 
 def cart(request):
 	data = cartData(request)
-	cartItems = data('cartItems')
-	order_list = data('order_list')
-	items = data('items')
+	cartItems = data['cartItems']
+	order = data['order']
+	items = data['items']
 
-	context = {'items':items, 'order_list':order_list, 'cartItems':cartItems}
-	return render(request, 'order/cart.html', context)
+	context = {'items':items, 'order':order, 'cartItems':cartItems}
+	return render(request, 'cart.html', context)
 
 
 def checkout(request):
 	data = cartData(request)
-	cartItems = data('cartItems')
-	order_list = data('order_list')
-	items = data('items')
+	cartItems = data['cartItems']
+	order = data['order']
+	items = data['items']
 
-	context = {'items':items, 'order_list':order_list, 'cartItems':cartItems}
-
-    return render(request, "product/checkout.html", context)
+	context = {'items':items, 'order':order, 'cartItems':cartItems}
+	return render(request, "checkout.html", context)
 
 
 def updateItem(request):
@@ -36,19 +36,19 @@ def updateItem(request):
 
 	customer = request.user.customer
 	product = Product.objects.get(id=productId)
-	order_list, created = OrderList.objects.get_or_create(customer=customer, complete=False)
+	order, created = Order.objects.get_or_create(customer=customer, complete=False)
 
-	order_item, created = OrderItem.objects.get_or_create(order_list=order_list, product=product)
+	orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
 
 	if action == 'add':
-		order_item.quantity = (order_item.quantity + 1)
+		orderItem.quantity = (orderItem.quantity + 1)
 	elif action == 'remove':
-		order_item.quantity = (order_item.quantity - 1)
+		orderItem.quantity = (orderItem.quantity - 1)
 
-	order_item.save()
+	orderItem.save()
 
-	if order_item.quantity <= 0:
-		order_item.delete()
+	if orderItem.quantity <= 0:
+		orderItem.delete()
 
 	return JsonResponse('Item was added', safe=False)
 
@@ -58,23 +58,22 @@ def processOrder(request):
 
 	if request.user.is_authenticated:
 		customer = request.user.customer
-		order_list, created = OrderList.objects.get_or_create(customer=customer, complete=False)
+		order, created = Order.objects.get_or_create(customer=customer, complete=False)
 	else:
-		customer, order_list = guestOrder(request, data)
+		customer, order = guestOrder(request, data)
 
 	total = float(data['form']['total']) # checkout.html 100 строка
 
-	if total == order_list.get_cart_total:
-		order_list.complete = True
-	order_list.save()
+	if total == float(order.get_cart_total):
+		order.complete = True
+	order.save()
 
-	order_list.shipping = Shipping.objects.create(
-		customer=customer,
-		order_list=order_list,
-		address=data['shipping']['address'],
-		note=data['shipping']['note']
-		)
-else:
-		
+	if order.shipping:
+		Shipping.objects.create(
+			customer=customer,
+			order=order,
+			address=data['shipping']['address'],
+			nore=['shipping']['note']
+			)
 
-	return JsonResponse('Payment submitted..', safe=False)
+	return JsonResponse('Заказ выполнен', safe=False)

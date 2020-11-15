@@ -12,17 +12,17 @@ class CustomerAdmin(admin.ModelAdmin):
     list_display = ["user", "name", "phone_number", "email"]
 
 
-@admin.register(OrderList)
-class OrderListAdmin(admin.ModelAdmin):
-    list_display = ["id", "customer", "complete", "created"]
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ["id", "customer", "complete", "order_date"]
     inlines = [OrderItemInline]
 
 
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ["product", "order_list", "quantity"]
+    list_display = ["product", "order", "quantity"]
 
 
 @admin.register(Shipping)
 class ShippingAdmin(admin.ModelAdmin):
-    list_display = ["customer", "order_list", "address", "note"]
+    list_display = ["customer", "order", "address", "note"]

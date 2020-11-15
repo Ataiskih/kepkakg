@@ -1,5 +1,7 @@
 import json
-from .models import *
+
+from order.models import Customer, Order, OrderItem
+from product.models import Product
 
 
 def cookieCart(request):
@@ -8,46 +10,46 @@ def cookieCart(request):
         cart = json.loads(request.COOKIES['cart'])
     except:
         cart = {}
+
     items = []
-    order_list = {'get_cart_total':0, 'get_items_count':0}
-    cartItems = order_list['get_items_count']
+    order = {'get_cart_total':0, 'get_cart_items':0}
+    cartItems = order['get_cart_items']
 
     for i in cart:
         try:
             cartItems += cart[i]['quantity'] # число товаров в корзине
 
             product = Product.objects.get(id=i)
-            total = (product.price * cart[i]['quantity'])
+            total = (product.old_price * cart[i]['quantity'])
 
-            order_list['get_cart_total'] += total
-            order_list['get_cart_total'] += cart[i]['quantity']
+            order['get_cart_total'] += total
+            order['get_cart_total'] += cart[i]['quantity']
 
             item = {
-                    'id':product.id,
-                    'product':{'id':product.id,'name':product.name, 'price':product.new_price, 
-                    'image':product.main_image}, 'quantity':cart[i]['quantity'],
-                    }
+				'id':product.id,
+				'product':{'id':product.id,'name':product.name, 'price':product.old_price, 
+				'image':product.main_image}, 'quantity':cart[i]['quantity'],
+                }
             items.append(item)
-        
         except:
             pass # если продукта по каким-то причинам нет в бд, ошибка выдаваться не будет
     
-    return {'cartItems':cartItems, 'order_list':order_list, 'items':items}
+    return {'cartItems':cartItems, 'order':order, 'items':items}
 
 
 def cartData(request):
-    if request.user.is_authenticated:
+	if request.user.is_authenticated:
 		customer = request.user.customer
-		order_list, created = OrderList.objects.get_or_create(customer=customer, complete=False)
-		items = order_list.order_item.all()
-		cartItems = order_list.get_items_count
+		order, created = Order.objects.get_or_create(customer=customer, complete=False)
+		items = order.orderitem_set.all()
+		cartItems = order.get_cart_items
 	else:
 		cookieData = cookieCart(request)
-		cartItems = cookieData('cartItems')
-		order_list = cookieData('order_list')
-		items = cookieData('items')
+		cartItems = cookieData['cartItems']
+		order = cookieData['order']
+		items = cookieData['items']
 
-    return {'cartItems':cartItems, 'order_list':order_list, 'items':items}
+	return {'cartItems':cartItems, 'order':order, 'items':items}
 
 
 def guestOrder(request, data): # для guests
@@ -61,16 +63,16 @@ def guestOrder(request, data): # для guests
 	customer.name = name
 	customer.save()
 
-	order_list = OrderList.objects.create(
+	order = Order.objects.create(
 		customer=customer,
 		complete=False,
 		)
 
 	for item in items:
 		product = Product.objects.get(id=item['id'])
-		order_item = OrderItem.objects.create(
+		orderItem = OrderItem.objects.create(
 			product=product,
-			order_list=order_list,
+			order=order,
 			quantity=item['quantity'],
 		)
-	return customer, order_list
+	return customer, order
