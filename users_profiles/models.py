@@ -4,6 +4,7 @@ from base.models import BaseAbstractModel
 from autoslug import AutoSlugField
 User = get_user_model()
 
+from order.models import Customer
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
@@ -14,6 +15,7 @@ class UserProfile(models.Model):
         related_name='profile',
         verbose_name='Профиль',
     )
+    name = models.CharField(max_length=255, null=True)
     avatar = models.ImageField(
         upload_to='user_profiles',
         default='user_profiles/devault_avatar.jpg/',

@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     'django_extensions',
+
+    'order.apps.OrderConfig',
 ]
 
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
