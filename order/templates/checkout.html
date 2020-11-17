@@ -1,11 +1,12 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
+{% load bootstrap4 %}
 {% load static %}
-{% block page %}
-
+{% block content %}
 <div class="row">
     <div class="col-lg-6">
         <div class="box-element" id="form-wrapper">
             <form id="form">
+                {% csrf_token %}
                 <div id="user-info">
                     <div class="form-field">
                         <input required class="form-control" type="text" name="name" placeholder="Имя">
@@ -17,7 +18,7 @@
                 
                 <div id="shipping-info">
                     <hr>
-                    <p>Оформить доставку:</p>
+                    <p>Адрес</p>
                     <hr>
                     <div class="form-field">
                         <input class="form-control" type="text" name="address" placeholder="Адрес">
@@ -28,7 +29,7 @@
                 </div>
 
                 <hr>
-                <input id="form-button" class="btn btn-success btn-block" type="submit" value="Заказать">
+                <input id="form-button" class="btn btn-success btn-block" type="submit" value="Продолжить">
             </form>
         </div>
 
@@ -36,96 +37,133 @@
         <div class="box-element hidden" id="payment-info">
             <small>Детали оплаты</small>
             <button id="make-payment">Оплатить</button>
+            <div id="paypal-button-container"></div>
         </div>
         
     </div>
 
     <div class="col-lg-6">
         <div class="box-element">
-            <a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; К корзине</a>
+            <a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Назад</a>
             <hr>
             <h3>Итого</h3>
             <hr>
             {% for item in items %}
             <div class="cart-row">
-                <div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
+                <div style="flex:2"><img class="row-image" src="{{item.product.main_image.url}}"></div>
                 <div style="flex:2"><p>{{item.product.name}}</p></div>
-                <div style="flex:1"><p>{{item.product.price|floatformat:2}}</p></div>
+                <div style="flex:1"><p>{{item.product.new_price|floatformat:2}} сом</p></div>
                 <div style="flex:1"><p>x{{item.quantity}}</p></div>
             </div>
             {% endfor %}
-            <h5>Total:   ${{order.get_cart_total|floatformat:2}}</h5>
+            <h5>Итого:   {{order.get_cart_total|floatformat:2}}</h5>
         </div>
     </div>
 </div>
 
-<script type="text/javascript">
-        var shipping = '{{order.shipping}}'
+<script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
+    <script>
         var total = '{{order.get_cart_total}}'
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
 
-        if (user != 'AnonymousUser'){
-            document.getElementById('user-info').innerHTML = ''
-        
-        if (user != 'AnonymousUser'){
-                // если вошел и shipping false, то скрыть эту часть
-                document.getElementById('form-wrapped').classList.add("hidden");
-                // показывать, если вошел и хочет заказать товар с shipping = false
-                document.getElementById('payment-info').classList.add("hidden");
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: parseFloat(total).toFixed(2)
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Show a success message to the buyer
+                    submitFormData()
+                });
             }
 
-            var form = document.getElementById('form')
-            form.addEventListener('submit', function(e){
+
+        }).render('#paypal-button-container');
+    </script>
+
+<script type="text/javascript">
+
+    var shipping = '{{order.shipping}}'
+
+    if (user != 'AnonymousUser'){
+        document.getElementById('user-info').innerHTML = ''
+    }
+
+    if (shipping && user != 'AnonymousUser'){
+        // если вошел и shipping false, то скрыть эту часть
+        document.getElementById('form-wrapped').classList.add("hidden");
+        // показывать, если вошел и хочет заказать товар с shipping = false
+        document.getElementById('payment-info').classList.add("hidden");
+    }
+
+    var form = document.getElementById('form')
+
+    csrftoken = form.getElementsByTagName("input")[0].value
+	console.log('newtoken:', form.getElementsByTagName("input")[0].value)
+
+    form.addEventListener('submit', function(e){
             e.preventDefault()
             console.log('Form Submitted...')
             document.getElementById('form-button').classList.add("hidden");
             document.getElementById('payment-info').classList.remove("hidden");
-        })
-        document.getElementById('make-payment').addEventListener('click', function(e){
-                submitFormData()
             })
-    function submitFormData(){
-		console.log('Payment button clicked')
 
-		var userFormData = {
-			'name':null,
-			'email':null,
-			'total':total,
+        document.getElementById('make-payment').addEventListener('click', function(e){
+            submitFormData()
+        })
+
+        function submitFormData(){
+		    console.log('Payment button clicked')
+
+		    var userFormData = {
+                'name':null,
+                'email':null,
+                'total':total,
 			}
 
 			var shippingInfo = {
+                'note':null,
 				'address':null,
             }
 
-		if (user == 'AnonymousUser'){
-			userFormData.name = form.name.value
-			userFormData.email = form.email.value
-		}
+            if (shipping){
+				shippingInfo.address = form.address.value
+			}
 
-		console.log('Shipping Info:', shippingInfo)
-		console.log('User Info:', userFormData)
+            if (user == 'AnonymousUser'){
+                userFormData.name = form.name.value
+                userFormData.email = form.email.value
+            }
 
-		var url = "/process_order/"
-		fetch(url, {
-			method:'POST',
-			headers:{
-				'Content-Type':'applicaiton/json',
-				'X-CSRFToken':csrftoken,
-			}, 
-			body:JSON.stringify({'form':userFormData, 'shipping':shippingInfo}),
-			
-		})
-		.then((response) => response.json())
-		.then((data) => {
-			console.log('Success:', data);
-			alert('Transaction completed');
+            var url = "/process_order/"
+            fetch(url, {
+                method:'POST',
+                headers:{
+                    'Content-Type':'applicaiton/json',
+                    'X-CSRFToken':csrftoken,
+                }, 
+                body:JSON.stringify({'form':userFormData, 'shipping':shippingInfo}),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('Success:', data);
+                alert('Transaction completed');
 
-			cart = {}
-			document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
-			window.location.href = "{% url 'main' %}"
+                cart = {}
+                document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+                window.location.href = "{% url 'index' %}"
 
-		})
-	}
-    
+            })
+	    }
 </script>
 
 {% endblock %}

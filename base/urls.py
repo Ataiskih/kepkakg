@@ -13,7 +13,7 @@ urlpatterns = [
     path('product/', include('product.urls')),
     path('accounts/', include('allauth.urls')),
     path('order/', include('order.urls')),
-    path('profile/', include('profile.urls')),
+    path('profile/', include('users_profiles.urls')),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
