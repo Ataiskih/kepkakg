@@ -1,8 +1,11 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.db.models.signals import post_save
 from base.models import BaseAbstractModel
 from autoslug import AutoSlugField
 User = get_user_model()
+
+from order.models import Customer
 
 from order.models import Customer
 
@@ -15,7 +18,6 @@ class UserProfile(models.Model):
         related_name='profile',
         verbose_name='Профиль',
     )
-    name = models.CharField(max_length=255, null=True)
     avatar = models.ImageField(
         upload_to='user_profiles',
         default='user_profiles/devault_avatar.jpg/',
@@ -71,7 +73,21 @@ class UserProfile(models.Model):
         default='user',
     )
 
-
     class Meta:
         verbose_name = "Профиль пользователя"
         verbose_name_plural = "Профили пользователей"
+
+
+def create_customer(sender, instance, created, **kwargs):
+    if created:
+        Customer.objects.create(user=instance)
+        print('customer created')
+
+post_save.connect(create_customer, sender=User)
+
+def update_customer(sender, instance, created, **kwargs):
+    if created == False:
+        instance.customer.save()
+        print('customer updated')
+
+post_save.connect(update_customer, sender=User)
