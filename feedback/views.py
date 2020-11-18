@@ -7,13 +7,16 @@ def feedback(request):
     context = {}
     form = FeedBackForm(request.POST, request.FILES)
     if form.is_valid():
-        feedback.user = request.user
-        feedback.save()
+        feedback = form.save()
+        if request.user.is_authenticated:
+            feedback.user = request.user
+            feedback.save()
+
         context["message"] = "Ваше обращение принято, спасибо!"
         context["type"] = "success"
-        return render(request, "product/templates/index.html", context)
+        return render(request, "index.html", context)
 
     context["message"] = "Форма заполнена неверно!"
     context["type"] = "warning"
-    return render(request, "product/templates/index.html", context)
+    return render(request, "index.html", context)
 

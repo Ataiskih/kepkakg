@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'bootstrap4',
     'product',
+    'feedback',
     'order',
     'users_profiles',
     'allauth',
@@ -47,7 +48,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     'django_extensions',
-    'feedback'
 ]
 
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'

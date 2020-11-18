@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import Q
 from django.http import Http404
 from django.views.generic import (
     ListView,
@@ -9,6 +10,7 @@ from product.models import(
     ProductCharacteristic,
     ProductAdditionalImages,
 )
+from django.views.generic.base import View
 from product.forms import Category,CategoryCreateForm
 from feedback.forms import FeedBackForm,FeedBack
 
@@ -52,4 +54,6 @@ class ProductDetailView(DetailView):
 def category(request, pk):
     context = {}
     context["category_pk"] = pk
-    return render(request, "product/index.html", context)
+    return render(request, "index.html", context)
+
+

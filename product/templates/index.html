@@ -29,9 +29,10 @@
                 <a href="#" class="nav-item nav-link">Акции</a>
             </div>
             <!-- Search -->
-            <form class="form-inline ml-auto">
-                <input type="text" class="form-control mr-sm-2" placeholder="Ключевое слово">
-                <button type="submit" class="btn btn-outline-light">Искать</button>
+            <form class="form-inline my-2 my-lg-0 mr-sm-2" action="{% url 'search' %}">
+              {% csrf_token %}
+              <input class="form-control mr-sm-2" type="text" name="q">
+              <button class="btn btn-success my-2 my-sm-0">Поиск</button>
             </form>
         </div>
         &#8195;
@@ -77,7 +78,7 @@
         <div>
           {% block page %}
           <div class="row">
-              <div class="col-lg-3 col-md-2">
+              <div class="col-lg-7 col-md-2">
                 <div class="list-group">
                   {% for category in categories %}
                     <div    
