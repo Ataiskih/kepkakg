@@ -76,18 +76,3 @@ class UserProfile(models.Model):
     class Meta:
         verbose_name = "Профиль пользователя"
         verbose_name_plural = "Профили пользователей"
-
-
-def create_customer(sender, instance, created, **kwargs):
-    if created:
-        Customer.objects.create(user=instance)
-        print('customer created')
-
-post_save.connect(create_customer, sender=User)
-
-def update_customer(sender, instance, created, **kwargs):
-    if created == False:
-        instance.customer.save()
-        print('customer updated')
-
-post_save.connect(update_customer, sender=User)
