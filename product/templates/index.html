@@ -29,7 +29,7 @@
                 <a href="#" class="nav-item nav-link">Акции</a>
             </div>
             <!-- Search -->
-            <form class="form-inline my-2 my-lg-0 mr-sm-2" action="{% url 'search' %}">
+            <form class="form-inline my-2 my-lg-0 mr-sm-2" action="{% url 'search_product' %}">
               {% csrf_token %}
               <input class="form-control mr-sm-2" type="text" name="q">
               <button class="btn btn-success my-2 my-sm-0">Поиск</button>

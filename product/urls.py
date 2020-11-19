@@ -9,11 +9,14 @@ from product.views import (
 )
 
 
+
 urlpatterns = [
     path('all/', ProductListView.as_view(), name='product'),
     path('<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
     path('feedback/', include("feedback.urls")),
     path("category/<int:pk>/", category, name="category"),
+    path('search/', Search.as_view(), name='search_product'),
+
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

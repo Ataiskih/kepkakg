@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.db.models import Q
 from django.http import Http404
 from django.views.generic import (
     ListView,
@@ -13,6 +12,7 @@ from product.models import(
 from django.views.generic.base import View
 from product.forms import Category,CategoryCreateForm
 from feedback.forms import FeedBackForm,FeedBack
+# from .filters import ProductFilter
 
 
 # main page (all products page)
@@ -55,5 +55,21 @@ def category(request, pk):
     context = {}
     context["category_pk"] = pk
     return render(request, "index.html", context)
+
+
+class Search(ListView):
+    paginate_by = 3
+
+    def get_queryset(self):
+        return Product.objects.filter(
+            description__icontains=self.request.GET.get('q'),
+            vendor_code__icontains=self.request.GET.get('q'),
+            category__name__icontains=self.request.GET.get('q'))
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['q'] = f"q={self.request.GET.get('q')}"
+        return render('index.html', context)
+
 
 
