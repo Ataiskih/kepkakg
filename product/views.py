@@ -64,7 +64,7 @@ class Search(ListView):
         return Product.objects.filter(
             description__icontains=self.request.GET.get('q'),
             vendor_code__icontains=self.request.GET.get('q'),
-            category__name__icontains=self.request.GET.get('q'))
+        )
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
