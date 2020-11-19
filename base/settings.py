@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'extra_views',
     'bootstrap4',
     'product',
+    'feedback',
     'order',
     'users_profiles',
     'allauth',
@@ -52,8 +53,11 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     'django_extensions',
+<<<<<<< HEAD
+=======
 
     # 'order.apps.OrderConfig',
+>>>>>>> 0acf90fe9e4172b81f80a49288bd81733d6d1ebb
 ]
 
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
@@ -100,6 +104,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'product.context_processors.category',
             ],
         },
     },

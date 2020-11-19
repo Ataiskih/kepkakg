@@ -1,8 +1,10 @@
 from django.contrib import admin
+from product.forms import Category
 from product.models import (
     Product,
     ProductCharacteristic,
     ProductAdditionalImages,
+    Category
 )
 
 
@@ -25,3 +27,8 @@ class ProductAdminForm(admin.ModelAdmin):
         ProductAdditionalImagesAdminInline,
         ProductCharacteristicAdminInline,
     ]
+
+@admin.register(Category)
+class Category(admin.ModelAdmin):
+    model = Category
+    fields = ["name"]
