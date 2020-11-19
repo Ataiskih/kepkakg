@@ -1,33 +1,50 @@
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.views.generic import (
-    ListView,
+from django.views.generic import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from users_profiles.models import (
+    UserProfile,
+    User,
 )
-from users_profiles.models import UserProfile
+from django.shortcuts import get_object_or_404
+from users_profiles.forms import UserForm
+
+from product.models import Product
+from order.models import Customer, Order, OrderItem, Shipping
 
 
-class UserProfileView(ListView):
+class ProfileUpdate(LoginRequiredMixin, UpdateView):
     model = UserProfile
     template_name = 'user_profiles/profiles.html'
+    success_url = '/'
+    fields = '__all__'
     context_object_name = 'profile'
-        
-    def get_queryset(self):
-        profile = UserProfile.objects.filter(
-            user=self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_form'] = UserForm(
+            instance=self.request.user
         )
-        return profile
+        return context
 
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(UserProfileView, self).dispatch(*args, **kwargs)
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        user = self.request.user
+        form = request.POST
+        user.username = form['username']
+        user.first_name = form['first_name']
+        user.last_name = form['last_name']
+        user.email = form['new_email']
+        user.save()
+        return response
 
-    # def get_contex_data(self, **kwargs):
-    #     username = self.kwargs['username']
-    #     profile = UserProfile.objects.get(
-    #         username=username
-    #     )
-    #     context = super().get_contex_data(**kwargs)
-    #     context['profile'] = UserProfile.objects.get(
-    #         username=username
-    #     )
-    #     return context
+    def dispatch(self, request, *args, **kwargs):
+        profile = UserProfile.objects.get(id=kwargs['pk'])
+        if request.user != profile.user:
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+    
+    # def user_orders(self, **kwargs):
+    #     user = self.request.user
+    #     customer = Customer.objects.get(user=user)
+    #     orders = Order.objects.filter(customer=customer)
+    #     orderItems = Order.objects.filter(order=orders)
+    #     products = Product.objects.filter(orderItem.product=product)

@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from base.models import BaseAbstractModel
+from autoslug import AutoSlugField
 User = get_user_model()
+
+from order.models import Customer
 
 
 class UserProfile(models.Model):
@@ -63,7 +66,10 @@ class UserProfile(models.Model):
         blank=True,
         verbose_name='Дополнительный адрес',
     )
-
+    slug = AutoSlugField(
+        populate_from='user',
+        default='user',
+    )
 
     class Meta:
         verbose_name = "Профиль пользователя"

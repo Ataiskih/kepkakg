@@ -1,6 +1,6 @@
 {% load bootstrap4 %}
-<!DOCTYPE html>
 {% load static %}
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -11,22 +11,76 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.6/css/all.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,600">
+    <link rel="shortcut icon" href="">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/for_cart_icons.css' %}">
 
+    <script type="text/javascript">
+      var user = '{{request.user}}'
+
+      function getToken(name) {
+      var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+      var csrftoken = getToken('csrftoken')
+
+      function getCookie(name) {
+        // Разделяем строку cookie получаем все отдельные пары имя = значение в массиве
+        var cookieArr = document.cookie.split(";");
+
+        // Перебираем элементы массива
+        for(var i = 0; i < cookieArr.length; i++) {
+          var cookiePair = cookieArr[i].split("=");
+
+          /* Удаление пробелов в начале имени файла cookie
+          и сравниваем == его с заданной строкой */
+          if(name == cookiePair[0].trim()) {
+            // Расшифровываем значение cookie и возвращаем
+            return decodeURIComponent(cookiePair[1]);
+          }
+        }
+
+        // Вернуть null если не найден
+        return null;
+      }
+  	  var cart = JSON.parse(getCookie('cart')) // cart используется в cart.js 48
+
+      if (cart == undefined){
+        cart = {}
+        console.log('Cart was created!', cart)
+        document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+      }
+      console.log('Cart:', cart)
+
+    </script>
 </head>
+
 <body>
     <!-- Header -->
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <a href="{% url 'product' %}" class="navbar-brand">КепкаKG</a>
+        <a href="{% url 'products' %}" class="navbar-brand">КепкаKG</a>
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <!-- Header links -->
             <div class="navbar-nav">
-                <a href="#" class="nav-item nav-link">Оформить заказ</a>
                 <a href="#" class="nav-item nav-link">Оплата и доставка</a>
-                <a href="#" class="nav-item nav-link">Акции</a>
+                <a href="{% url 'cart' %}">
+                  <img  id="cart-icon" src="{% static 'images/cart.png' %}">
+                </a>
+                <p id="cartItems" style="color:rgb(179, 182, 150)">{{cartItems}}</p>
             </div>
             <!-- Search -->
             <form class="form-inline my-2 my-lg-0 mr-sm-2" action="{% url 'search_product' %}">
@@ -45,18 +99,9 @@
                       {{ request.user.username }}
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">
-                          Уведомления
-                        </a>
-                      <a class="dropdown-item" href="{% url 'profile' request.user.username %}">
+                      <a class="dropdown-item" href="{% url 'edit-profile' request.user.profile.id %}">
                         Мой профиль
                       </a>
-                        <a class="dropdown-item" href="#">
-                          Корзина
-                        </a>
-                        <a class="dropdown-item" href="#">
-                          Избранное
-                        </a>
                     </div>
                   </li>
                       <a href="{% url 'account_logout' %}" class="nav-link d-inline">Выйти?</a>
@@ -75,6 +120,7 @@
         <div class="col-lg-1 col-md-1 col-sm-12">
         </div>
         <!-- block categories -->
+<<<<<<< HEAD
         <div>
           {% block page %}
           <div class="row">
@@ -105,11 +151,40 @@
               </div>
             </div>
             {% endblock %}
+=======
+        <div class="col-lg-2 col-md-2 col-sm-12">
+              <br>
+              <div>
+                <a href="#">Шапки</a>
+              </div>
+              <hr>
+              <div>
+                <a href="#">Банданы</a>
+              </div>
+              <hr>
+              <div>
+                <a href="#">Панамы</a>
+              </div>
+              <hr>
+              <div>
+                <a href="#">Балаклавы</a>
+              </div>
+              <hr>
+              <div>
+                <a href="#">Козырьки</a>
+              </div>
+              <hr>
+              <div>
+                <a href="#">Бейсболки</a>
+              </div>
+              <hr>
+>>>>>>> 0acf90fe9e4172b81f80a49288bd81733d6d1ebb
         </div>
             <!-- Main info -->
         <div class="col-lg-7 col-md-8 col-sm-12">
             <br>
-            {% block content %}{% endblock %}
+            {% block content %}
+            {% endblock %}
             <br>
         </div>
         <!-- Right block empty -->
@@ -123,16 +198,13 @@
 		        	<div class="row">
 		        		<div class="col-md-4 col-lg-4 footer-about wow fadeInUp">
 		        			<p>
-                                „Очень дорогая одежда старит.“
-                                Коко Шанель
-		        			</p>
+                    <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Abf9ada38e695198339df5787b6df71c769687bbfb16614a9cc61bf7cf9288474&amp;width=400&amp;height=400&amp;lang=ru_RU&amp;scroll=true"></script>
+                  </p>
 	                    </div>
 		        		<div class="col-md-4 col-lg-4 offset-lg-1 footer-contact wow fadeInDown">
 		        			<h3>Контакты</h3>
-                            <p><i class="fas fa-map-marker-alt"></i>г. Бишкек ТЦ ЦУМ 3 эт. B16</p>
                             <p><i class="fas fa-map-marker-alt"></i>г. Бишкек ВЕФА 1 эт.</p>
                             <p><i class="fas fa-map-marker-alt"></i>г. Бишкек Киевская, 124</p>
-                            <p><i class="fas fa-map-marker-alt"></i>г. Ош, Масалиева, 124 Корона 1 эт.</p>
 		                	<p><i class="fas fa-phone"></i> +996 556 783 768, + 996 709 783 768</p>
 		                	<p><i class="fas fa-envelope"></i> Email: <a href="mailto:hello@domain.com">hello@domain.com</a></p>
 	                    </div>
@@ -150,11 +222,9 @@
 		        </div>
 	        </div>
         </footer>
-<!-- Javascript -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-
-
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
 </body>
 </html>
