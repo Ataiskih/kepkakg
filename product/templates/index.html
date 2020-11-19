@@ -98,15 +98,9 @@
                       {{ request.user.username }}
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">
-                          Уведомления
-                        </a>
                       <a class="dropdown-item" href="{% url 'edit-profile' request.user.profile.id %}">
                         Мой профиль
                       </a>
-                        <a class="dropdown-item" href="#">
-                          Избранное
-                        </a>
                     </div>
                   </li>
                       <a href="{% url 'account_logout' %}" class="nav-link d-inline">Выйти?</a>
@@ -125,31 +119,32 @@
         <div class="col-lg-1 col-md-1 col-sm-12">
         </div>
         <!-- block categories -->
-        <div class="col-lg-3 col-md-2 col-sm-12">
+        <div class="col-lg-2 col-md-2 col-sm-12">
+              <br>
               <div>
-                Тут будут категории товаров
+                <a href="#">Шапки</a>
               </div>
+              <hr>
               <div>
-                Тут будут категории товаров
+                <a href="#">Банданы</a>
               </div>
+              <hr>
               <div>
-                Тут будут категории товаров
+                <a href="#">Панамы</a>
               </div>
+              <hr>
               <div>
-                Тут будут категории товаров
+                <a href="#">Балаклавы</a>
               </div>
+              <hr>
               <div>
-                Тут будут категории товаров
+                <a href="#">Козырьки</a>
               </div>
+              <hr>
               <div>
-                Тут будут категории товаров
+                <a href="#">Бейсболки</a>
               </div>
-              <div>
-                Тут будут категории товаров
-              </div>
-              <div>
-                Тут будут категории товаров
-              </div>
+              <hr>
         </div>
             <!-- Main info -->
         <div class="col-lg-7 col-md-8 col-sm-12">

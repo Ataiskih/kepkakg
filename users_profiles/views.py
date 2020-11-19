@@ -7,6 +7,9 @@ from users_profiles.models import (
 from django.shortcuts import get_object_or_404
 from users_profiles.forms import UserForm
 
+from product.models import Product
+from order.models import Customer, Order, OrderItem, Shipping
+
 
 class ProfileUpdate(LoginRequiredMixin, UpdateView):
     model = UserProfile
@@ -38,3 +41,10 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
         if request.user != profile.user:
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
+    
+    # def user_orders(self, **kwargs):
+    #     user = self.request.user
+    #     customer = Customer.objects.get(user=user)
+    #     orders = Order.objects.filter(customer=customer)
+    #     orderItems = Order.objects.filter(order=orders)
+    #     products = Product.objects.filter(orderItem.product=product)

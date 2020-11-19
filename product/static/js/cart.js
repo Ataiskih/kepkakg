@@ -33,7 +33,7 @@ function updateUserOrder(productId, action){
 		return response.json();
 	})
 	.then((data) => {
-		console.log('data',data)
+		console.log('data:',data)
 		location.reload()
 	});
 }
@@ -44,7 +44,7 @@ function addCookieItem(productId, action){
 
 	if (action == 'add'){
 		if (cart[productId] == undefined){
-		cart[productId] = {'quantity':1}
+			cart[productId] = {'quantity':1}
 		}else{
 			cart[productId]['quantity'] += 1
 		}
