@@ -1,7 +1,7 @@
 from django import forms
-from .models import FeedBack
+from .models import Feedback
 
-class FeedBackForm(forms.ModelForm):
+class FeedbackForm(forms.ModelForm):
     class Meta:
-        model = FeedBack
-        fields = ["name", "text", "phone", "email"]
+        model = Feedback
+        fields = ["name", "text","email"]

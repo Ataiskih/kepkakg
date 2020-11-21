@@ -137,7 +137,7 @@ class ProductCharacteristic(models.Model):
 
 class Category(models.Model):
     name = models.CharField(
-        max_length=255, verbose_name="Название")
+        max_length=255, verbose_name="Категория")
 
     def __str__(self):
         return self.name
@@ -145,4 +145,3 @@ class Category(models.Model):
     class Meta:
         verbose_name = "категория"
         verbose_name_plural = "Категории"
-

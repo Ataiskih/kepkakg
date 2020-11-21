@@ -1,5 +1,4 @@
 from django.contrib import admin
-from product.forms import Category
 from product.models import (
     Product,
     ProductCharacteristic,
@@ -8,20 +7,20 @@ from product.models import (
 )
 
 
-class ProductAdditionalImagesAdminInline(admin.TabularInline):
+class ProductAdditionalImagesInline(admin.TabularInline):
     model = ProductAdditionalImages
     fields = ['addentional_images',]
     extra = 1
 
 
-class ProductCharacteristicAdminInline(admin.TabularInline):
+class ProductCharacteristicInline(admin.TabularInline):
     model = ProductCharacteristic
     fields = ['material', 'size', 'color']
     extra = 0
 
 
 @admin.register(Product)
-class ProductAdminForm(admin.ModelAdmin):
+class ProductAdmin(admin.ModelAdmin):
     exclude = ('updated',)
     inlines = [
         ProductAdditionalImagesAdminInline,
@@ -29,6 +28,6 @@ class ProductAdminForm(admin.ModelAdmin):
     ]
 
 @admin.register(Category)
-class Category(admin.ModelAdmin):
+class CategoryAdmin(admin.ModelAdmin):
     model = Category
     fields = ["name"]

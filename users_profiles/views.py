@@ -41,10 +41,3 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
         if request.user != profile.user:
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
-    
-    # def user_orders(self, **kwargs):
-    #     user = self.request.user
-    #     customer = Customer.objects.get(user=user)
-    #     orders = Order.objects.filter(customer=customer)
-    #     orderItems = Order.objects.filter(order=orders)
-    #     products = Product.objects.filter(orderItem.product=product)

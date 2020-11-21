@@ -1,22 +1,22 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
-from .forms import FeedBackForm
+from .forms import FeedbackForm
 
 @require_POST
 def feedback(request):
     context = {}
-    form = FeedBackForm(request.POST, request.FILES)
+    form = FeedbackForm(request.POST)
     if form.is_valid():
         feedback = form.save()
         if request.user.is_authenticated:
             feedback.user = request.user
             feedback.save()
 
-        context["message"] = "Ваше обращение принято, спасибо!"
+        context["message"] = "Ваш отзыв принят, спасибо!"
         context["type"] = "success"
-        return render(request, "index.html", context)
+        return render(request, "message.html", context)
 
-    context["message"] = "Форма заполнена неверно!"
+    context["message"] = "Форма заполнена неверно"
     context["type"] = "warning"
-    return render(request, "index.html", context)
+    return render(request, "message.html", context)
 

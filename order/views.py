@@ -73,7 +73,7 @@ def processOrder(request):
 			customer=customer,
 			order=order,
 			address=data['shipping']['address'],
-			nore=['shipping']['note']
+			note=data['shipping']['note']
 			)
 
 	return JsonResponse('Заказ выполнен', safe=False)
