@@ -17,6 +17,12 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.name
+    
+    @property
+	def customer_orders(self):
+		orders = self.order_set.all()
+		return orders.values('id')
+
 
 class Order(models.Model):
     customer = models.ForeignKey(
