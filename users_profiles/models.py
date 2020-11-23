@@ -1,10 +1,9 @@
 from django.db import models
+from django.db.models.signals import post_save
 from django.contrib.auth import get_user_model
 from base.models import BaseAbstractModel
 from autoslug import AutoSlugField
 User = get_user_model()
-
-from order.models import Customer
 
 
 class UserProfile(models.Model):
@@ -74,3 +73,19 @@ class UserProfile(models.Model):
     class Meta:
         verbose_name = "Профиль пользователя"
         verbose_name_plural = "Профили пользователей"
+
+
+def create_customer(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+        print("profile created")
+
+post_save.connect(create_customer, sender=User)
+
+
+def update_customer(sender, instance, created, **kwargs):
+    if created == False:
+        instance.profile.save()
+        print("profile updated")
+
+post_save.connect(update_customer, sender=User)

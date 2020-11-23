@@ -23,8 +23,8 @@ class ProductCharacteristicInline(admin.TabularInline):
 class ProductAdmin(admin.ModelAdmin):
     exclude = ('updated',)
     inlines = [
-        ProductAdditionalImagesAdminInline,
-        ProductCharacteristicAdminInline,
+        ProductAdditionalImagesInline,
+        ProductCharacteristicInline
     ]
 
 @admin.register(Category)

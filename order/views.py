@@ -72,8 +72,23 @@ def processOrder(request):
 		Shipping.objects.create(
 			customer=customer,
 			order=order,
-			address=data['shipping']['address'],
-			note=data['shipping']['note']
+			address=data['shipping']['address']
 			)
 
 	return JsonResponse('Заказ выполнен', safe=False)
+
+
+def info(request):
+    return render(request, 'info.html')
+
+
+def ordersList(request, id):
+	data = cartData(request)
+	cartItems = data['cartItems']
+	orders_db = Order.objects.all()
+	customer = Customer.objects.get(id=id)
+	orders = customer.customer_orders # 2 3 4
+	print(orders) # <QuerySet [<Order: Order object (2)>, <Order: Order object (3)>, <Order: Order object (4)>]>
+	print([order.order_date for order in orders]) # [datetime.datetime(2020, 11, 22, 12, 19, 43, 357439, tzinfo=<UTC>), datetime.datetime(2020, 11, 22, 22, 43, 39, 734938, tzinfo=<UTC>), datetime.datetime(2020, 11, 22, 22, 43, 43, 688649, tzinfo=<UTC>)]
+	context = {'cartItems':cartItems, 'orders': orders}
+	return render(request, 'orders_list.html', context)

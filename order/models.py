@@ -14,14 +14,11 @@ class Customer(models.Model):
     name = models.CharField(max_length=255, null=True)
     phone_number = models.CharField(max_length=30, null=True, blank=True)
     email = models.EmailField(max_length=255, null=True, blank=True)
-
-    def __str__(self):
-        return self.name
     
     @property
-	def customer_orders(self):
-		orders = self.order_set.all()
-		return orders.values('id')
+    def customer_orders(self):
+        orders = self.order_set.all()
+        return orders
 
 
 class Order(models.Model):
@@ -77,10 +74,7 @@ class Shipping(models.Model):
         on_delete = models.SET_NULL
         )
     address = models.CharField(max_length=255, null=True)
-    note = models.CharField(
-        max_length=255,
-        null=True, blank=True
-    )
+
 
 def create_customer(sender, instance, created, **kwargs):
     if created:

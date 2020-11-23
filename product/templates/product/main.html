@@ -1,22 +1,21 @@
 {% extends 'index.html' %}
 {% load bootstrap4 %}
+{% load static %}
 {% block content %}
-<br>
 <div class="container-fluid text-center bg-grey">
     <div class="row text-center">
-    {% for product in object_list %}
-      <div class="col-sm-3">
+    {% for obj in filter.qs %}
+      <div class="col-sm-4">
         <div class="thumbnail">
-          <a href="{% url 'product_detail' product.id %}">
-        {% if product.main_image %}
-          <img src="{{ product.main_image.url }}" width="150px">
+          <a href="{% url 'product_detail' obj.id %}">
+        {% if obj.main_image %}
+          <img src="{{ obj.main_image.url }}" width="150px">
         {% endif %}
           </a>
-        <a href="{% url 'product_detail' product.id %}">
-          <p>{{ product.name }}</p>
+        <a href="{% url 'product_detail' obj.id %}">
+          <p>{{ obj.name }}</p>
         </a>
-          <p><strong>{{ product.old_price|floatformat:0 }} сом</strong></p>
-          <p>category</p>         
+          <p><strong>{{ obj.old_price|floatformat:0 }} сом</strong></p>        
         </div>
       </div>
       {% endfor %}

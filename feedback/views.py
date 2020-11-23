@@ -14,9 +14,9 @@ def feedback(request):
 
         context["message"] = "Ваш отзыв принят, спасибо!"
         context["type"] = "success"
-        return render(request, "message.html", context)
+        return render(request, "product/message.html", context)
 
-    context["message"] = "Форма заполнена неверно"
+    context["message"] = "Форма заполнена неверно("
     context["type"] = "warning"
-    return render(request, "message.html", context)
+    return render(request, "product/message.html", context)
 

@@ -1,9 +1,9 @@
 from product.models import Category
-from feedback.forms import FeedBackForm
+from feedback.forms import FeedbackForm
 
 
 def category(request):
     context = {}
     context["categories"] = Category.objects.order_by("name")
-    context["feedback_form"] = FeedBackForm()
+    context["feedback_form"] = FeedbackForm()
     return context

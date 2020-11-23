@@ -2,24 +2,24 @@ from django.shortcuts import render
 from django.core.paginator import Paginator
 from django.http import Http404
 
-from product.models import Product, ProductCharacteristic, ProductAdditionalImages
+from product.models import Product, ProductCharacteristic, ProductAdditionalImages, Category
 from order.utils import cartData
+from product.filters import ProductFilter
 
 
 def products(request):
-    context = {}
     data = cartData(request)
     cartItems = data['cartItems']
-    context['cartItems'] = cartItems
 
-    object_list = Product.objects.filter(
+    f = ProductFilter(request.GET, queryset=Product.objects.filter(
         availability=True,
         deleted=False 
-        )
-    paginator = Paginator(object_list, 50)
-    context['object_list'] = object_list
+        ))
 
-    return render(request, 'main.html', context)
+    context = {'cartItems':cartItems, 'filter': f}
+    paginator = Paginator(f, 50)
+
+    return render(request, 'product/main.html', context)
 
 
 def product(request, pk):
@@ -38,8 +38,16 @@ def product(request, pk):
         context['message'] = 'Не найдено'
         return render(request, 'message.html', context)
 
-    return render(request, 'product.html', context)
+    return render(request, 'product/product.html', context)
 
 
-def info(request):
-    return render(request, 'info.html')
+def category(request, pk):
+    context = {}
+    context['products'] = Product.objects.filter(
+        category__id=pk,
+        availability=True,
+        deleted=False
+        )
+    context['category_pk'] = pk
+
+    return render(request, "product/products.html", context)

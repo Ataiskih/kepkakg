@@ -59,7 +59,6 @@ class Product(BaseAbstractModel):
         default=5,
         verbose_name='Магазины'
     )
-
     category = models.ForeignKey(
         to="Category",
         on_delete=models.SET_NULL,
@@ -68,7 +67,6 @@ class Product(BaseAbstractModel):
         blank=True,
         verbose_name="Категория"
     )
-
 
     class Meta:
         verbose_name = "Товар"
@@ -136,12 +134,11 @@ class ProductCharacteristic(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(
-        max_length=255, verbose_name="Категория")
+    name = models.CharField(max_length=255, verbose_name="Категория")
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = "категория"
+        verbose_name = "категорию"
         verbose_name_plural = "Категории"

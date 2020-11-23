@@ -25,4 +25,4 @@ class OrderItemAdmin(admin.ModelAdmin):
 
 @admin.register(Shipping)
 class ShippingAdmin(admin.ModelAdmin):
-    list_display = ["customer", "order", "address", "note"]
+    list_display = ["customer", "order", "address"]
