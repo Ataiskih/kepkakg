@@ -42,12 +42,16 @@ def product(request, pk):
 
 
 def category(request, pk):
-    context = {}
-    context['products'] = Product.objects.filter(
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    f = ProductFilter(request.GET, queryset=Product.objects.filter(
         category__id=pk,
         availability=True,
-        deleted=False
-        )
+        deleted=False 
+        ))
+
+    context = {'cartItems':cartItems, 'filter': f}
     context['category_pk'] = pk
 
-    return render(request, "product/products.html", context)
+    return render(request, "product/main.html", context)
