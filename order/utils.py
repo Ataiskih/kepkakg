@@ -1,6 +1,5 @@
 import json
-
-from order.models import Customer, Order, OrderItem
+from order.models import *
 from product.models import Product
 
 
@@ -29,6 +28,7 @@ def cookieCart(request):
 				'id':product.id,
 				'product':{'id':product.id,'name':product.name, 'price':product.old_price, 
 				'image':product.main_image}, 'quantity':cart[i]['quantity'],
+				'get_total':total,
                 }
             items.append(item)
         except:

@@ -1,0 +1,73 @@
+{% extends "account/base.html" %}
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="d-flex justify-content-center h-100">
+      <div class="card">
+          <div class="card-header">
+              <h3>{% trans "Sign Up" %}</h3>
+                <!-- Facebook Google -->
+              <!-- <div class="d-flex justify-content-end social_icon">
+                  <a href="https://127.0.0.1:8001/accounts/facebook/login/?process=login">
+                      <span>
+                        <i class="fab fa-facebook-square">
+                      </i></span>
+                  </a>
+                  <a href="https://127.0.0.1:8001/accounts/google/login/?process=login">
+                      <span>
+                        <i class="fab fa-google-plus-square"></i>
+                    </span>
+                  </a>
+              </div> -->
+          </div>
+          <div class="card-body">
+              <form class="signup" id="signup_form" 
+                  method="POST" action="{% url 'account_signup' %}">
+                {% csrf_token %}
+                  <!-- username -->
+                  <div class="input-group form-group">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="fas fa-user"></i></span>
+                      </div>
+                      <input id="id_username" type="text" class="form-control" placeholder="Имя пользователя" name="username">
+                  </div>
+                  <!-- E-mail -->
+                  <div class="input-group form-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    </div>
+                    <input id="id_email" type="email" class="form-control" placeholder="e-mail" name="email">
+                </div>
+                    <!-- Password1 -->
+                  <div class="input-group form-group">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="fas fa-key"></i></span>
+                      </div>
+                      <input id="id_password1" type="password" class="form-control" placeholder="Введите пароль" name="password1">
+                  </div>
+                    <!-- Checkbox -->
+                  <!-- <div class="row align-items-center remember">
+                      <input type="checkbox">Запомнить
+                  </div> -->
+                    <!-- Button -->
+                  <div class="form-group">
+                      <input type="submit" value="{% trans 'Sign Up' %}" class="btn float-right login_btn btn-md btn-auto">
+                  </div>
+              </form>
+          </div>
+          <div class="card-footer">
+              <div class="d-flex justify-content-center links">
+                <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+              </div>
+              <div class="d-flex justify-content-center">
+                  <a href="{% url 'account_reset_password' %}">Забыли пароль?</a>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}

@@ -48,16 +48,17 @@
                 <hr>
                 {% for item in items %}
                 <div class="cart-row">
-                    <div style="flex:2"><img class="row-image" src="{{ item.product.main_image.url }}"></div>
+                    <div style="flex:2"><img class="row-image" src="{{ item.product.imageURL }}"></div>
                     <div style="flex:2"><p>{{item.product.name}}</p></div>
-                    <div style="flex:1"><p>{{item.product.old_price|floatformat:2}} сом</p></div>
+                    <div style="flex:1"><p>{{item.product.old_price}} сом</p></div>
                     <div style="flex:1"><p>x{{item.quantity}}</p></div>
                 </div>
                 {% endfor %}
-                <h5>Итого:  {{order.get_cart_total|floatformat:2}} сом</h5>
+                <h5>Итого:  {{order.get_cart_total}} сом</h5>
             </div>
         </div>
     </div>
+
     <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
     <script>
         var total = '{{order.get_cart_total}}'
@@ -89,80 +90,79 @@
 
 <script type="text/javascript">
 
-        var shipping = '{{order.shipping}}'
+    var shipping = '{{order.shipping}}'
 
-        if (user != 'AnonymousUser'){
-            document.getElementById('user-info').innerHTML = ''
-        }
+    if (user != 'AnonymousUser'){
+        document.getElementById('user-info').innerHTML = ''
+    }
 
-        if (shipping && user != 'AnonymousUser'){
-            // если вошел и shipping false, то скрыть эту часть
-            document.getElementById('form-wrapped').classList.add("hidden");
-            // показывать, если вошел и хочет заказать товар с shipping = false
-            document.getElementById('payment-info').classList.add("hidden");
-        }
+    if (shipping && user != 'AnonymousUser'){
+        document.getElementById('form-wrapped').classList.add("hidden");
+        // показывать, если вошел и хочет заказать товар с shipping = false
+        document.getElementById('payment-info').classList.add("hidden");
+    }
 
-        var form = document.getElementById('form')
+    var form = document.getElementById('form')
 
-        csrftoken = form.getElementsByTagName("input")[0].value
-        console.log('newtoken:', form.getElementsByTagName("input")[0].value)
+    csrftoken = form.getElementsByTagName("input")[0].value
+    console.log('newtoken:', form.getElementsByTagName("input")[0].value)
 
-        form.addEventListener('submit', function(e){
-                e.preventDefault()
-                console.log('Form Submitted...')
-                document.getElementById('form-button').classList.add("hidden");
-                document.getElementById('payment-info').classList.remove("hidden");
-                })
-
-            document.getElementById('make-payment').addEventListener('click', function(e){
-                submitFormData()
+    form.addEventListener('submit', function(e){
+            e.preventDefault()
+            console.log('Form Submitted...')
+            document.getElementById('form-button').classList.add("hidden");
+            document.getElementById('payment-info').classList.remove("hidden");
             })
 
-            function submitFormData(){
-		        console.log('Payment button clicked')
+        document.getElementById('make-payment').addEventListener('click', function(e){
+            submitFormData()
+        })
 
-		        var userFormData = {
-                    'name':null,
-                    'email':null,
-                    'total':total,
-                }
+        function submitFormData(){
+            console.log('Payment button clicked')
 
-                var shippingInfo = {
-                    'address':null,
-                }
-
-                if (shipping){
-				    shippingInfo.address = form.address.value
-			    }
-
-                if (user == 'AnonymousUser'){
-                    userFormData.name = form.name.value
-                    userFormData.email = form.email.value
-                }
-
-                console.log('Shipping Info:', shippingInfo)
-                console.log('User Info:', userFormData)
-
-                var url = "/process_order/"
-                fetch(url, {
-                    method:'POST',
-                    headers:{
-                        'Content-Type':'applicaiton/json',
-                        'X-CSRFToken':csrftoken,
-                    }, 
-                    body:JSON.stringify({'form':userFormData, 'shipping':shippingInfo}),
-                })
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log('Success:', data);
-                    alert('Transaction completed');
-
-                    cart = {}
-                    document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
-                    window.location.href = "{% url 'checkout' %}"
-
-                })
+            var userFormData = {
+                'name':null,
+                'email':null,
+                'total':total,
             }
+
+            var shippingInfo = {
+                'address':null,
+            }
+
+            if (shipping){
+                shippingInfo.address = form.address.value
+            }
+
+            if (user == 'AnonymousUser'){
+                userFormData.name = form.name.value
+                userFormData.email = form.email.value
+            }
+
+            console.log('Shipping Info:', shippingInfo)
+            console.log('User Info:', userFormData)
+
+            var url = "/process_order/"
+            fetch(url, {
+                method:'POST',
+                headers:{
+                    'Content-Type':'applicaiton/json',
+                    'X-CSRFToken':csrftoken,
+                }, 
+                body:JSON.stringify({'form':userFormData, 'shipping':shippingInfo}),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('Success:', data);
+                alert('Transaction completed');
+
+                cart = {}
+                document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+                window.location.href = "{% url 'checkout' %}"
+
+            })
+        }
 </script>
 
 {% endblock %}

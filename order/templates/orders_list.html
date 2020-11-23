@@ -3,17 +3,21 @@
 {% load static %}
 
 {% block content %}
-    <div class="box-element">
-        <div class="cart-row">
-            <div style="flex:1"></div>
-            <div style="flex:1"><strong>Дата заказа</strong></div>
-            <div style="flex:1"><strong>Сумма</strong></div>
-        </div>
-        {% for order in orders %}
-        <div class="cart-row">
-            <div style="flex:1"><p>{{ order.order_date }}</p></div>
-            <div style="flex:1"><p>{{ order.get_cart_total }} сом</p></div>
-        </div>
-        {% endfor %}
-    </div>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Дата заказа</th>
+            <th scope="col">Сумма</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            {% if order.complete %}
+                  <tr>
+                    <td>{{ order.order_date }}</td>
+                    <td>{{ order.get_cart_total }} сом</td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+    </table>
 {% endblock %}

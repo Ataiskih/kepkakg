@@ -1,9 +1,9 @@
 from pathlib import Path
-# from base.keys import (
-#     project_key,
-#     email_password,
-#     user_login,
-# )
+from base.keys import (
+    project_key,
+    email_password,
+    user_login,
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -184,10 +184,10 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 # email
-# EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = user_login
-# EMAIL_HOST_PASSWORD = email_password
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_HOST_USER = user_login
+EMAIL_HOST_PASSWORD = email_password
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

@@ -10,23 +10,15 @@
     <div class="col-lg-1 col-md-1 col-sm-12">
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12">
-        {% if product.main_image.url%}
             <div>
-                <img src="{{ product.main_image.url }}" width="300px">
+                <img src="{{ product.imageURL }}" width="300px">
             </div>
-        {% endif %}
     </div>
     <div class="col-lg-5 col-md-5 col-sm-12">
-        <h4>{{ product.name }} - 
-            {% if product.availability %}
-                <button class="btn btn-secondary">Есть в наличии</button>
-            {% endif %}</h4>
+        <h4>{{ product.name }}
         <h4>{{ product.old_price }} сом</h4>
         <button data-product="{{product.id}}" data-action="add" class="btn btn-secondary btn-success add-btn update-cart">Добавить в корзину</button>
         <div>
-            <b> 
-                Описание товара: 
-            </b>
             {{ product.description|linebreaks }}
         </div>
         
@@ -41,9 +33,6 @@
                 Материал: {{ ch.material }}
             </div> 
         {% endfor %}
-            <div> 
-                Категория товара: 
-            </div>
     </div>
 </div>
 <div>

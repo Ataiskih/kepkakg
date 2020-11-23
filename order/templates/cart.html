@@ -11,8 +11,8 @@
                 <br>
 				<table class="table">
 					<tr>
-						<th><h5>Товары: <strong>{{cartItems}}</strong></h5></th>
-						<th><h5>Итого:<strong> {{order.get_cart_total}} сом</strong></h5></th>
+						<th><h5>Товары: <strong>{{ order.get_cart_items }}</strong></h5></th>
+						<th><h5>Итого:<strong> {{ order.get_cart_total }} сом</strong></h5></th>
 						<th>
 							<a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Продолжить</a>
 						</th>
@@ -31,7 +31,7 @@
 				</div>
 				{% for item in items %}
 				<div class="cart-row">
-					<div style="flex:2"><img class="row-image" src="{{item.product.main_image.url}}"></div>
+					<div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
 					<div style="flex:2"><p>{{item.product.name}}</p></div>
 					<div style="flex:1"><p>{{item.product.old_price}} сом</p></div>
 					<div style="flex:1">
@@ -42,7 +42,7 @@
 							<img data-product="{{item.product.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}">
 						</div>
 					</div>
-					<div style="flex:1"><p>{{item.get_total|floatformat}} сом</p></div>
+					<div style="flex:1"><p>{{item.get_total}} сом</p></div>
 				</div>
 				{% endfor %}
 			</div>

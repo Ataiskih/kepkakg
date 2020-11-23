@@ -3,7 +3,7 @@ from django.http import JsonResponse
 import json
 
 from order.models import *
-from order.utils import cartData, guestOrder
+from order.utils import *
 from product.models import Product
 
 
@@ -88,7 +88,6 @@ def ordersList(request):
 
 	if request.user.is_authenticated:
 		customer = request.user.customer
-		# customer = Customer.objects.get(request.user.customer)
 		orders = customer.customer_orders
 		context = {'cartItems':cartItems, 'orders': orders}
 		return render(request, 'orders_list.html', context)

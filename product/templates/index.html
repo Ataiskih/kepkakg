@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,600">
     <link rel="shortcut icon" href="">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'css/for_cart_icons.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/for_cart_icons.css' %}">
 
     <script type="text/javascript">
       var user = '{{request.user}}'
@@ -24,7 +24,6 @@
           var cookies = document.cookie.split(';');
           for (var i = 0; i < cookies.length; i++) {
             var cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
             if (cookie.substring(0, name.length + 1) === (name + '=')) {
               cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
               break;
@@ -36,7 +35,6 @@
       var csrftoken = getToken('csrftoken')
 
       function getCookie(name) {
-        // Разделяем строку cookie получаем все отдельные пары имя = значение в массиве
         var cookieArr = document.cookie.split(";");
 
         // Перебираем элементы массива
@@ -81,11 +79,6 @@
                   <img  id="cart-icon" src="{% static 'images/cart.png' %}">
                 </a>
                 <p id="cartItems" style="color:rgb(179, 182, 150)">{{cartItems}}</p>
-                <br>
-                <form method="get">
-                  {{ filter.form.as_p }}
-                  <button class="btn btn-primary" type="submit">Поиск</button>
-                </form>
             </div>
         </div>
         &#8195;
@@ -121,11 +114,12 @@
         <div class="row">
           <div class="col-lg-3 col-md-2">
             <div class="list-group">
+              <a href="{% url 'products' %}" class="list-group-item">Все товары</a>
               {% for category in categories %}
                 <a href="{% url 'category' category.id %}"
                   class="list-group-item
                   {% if category.id == category_pk %}
-                    list-group-item-info
+                    list-group-item-dark
                   {% endif %}
                 ">
                   {{ category.name }}
@@ -133,25 +127,25 @@
               {% endfor %}
             </div>
             <br>          
-            <h4 class="alert alert-success">Оставьте отзыв и получите скидку!</h4>
+            <h5 class="alert alert-dark">Оставьте отзыв о нашем магазине</h5>
             <div class="container-fluid">
               <form action="{% url 'feedback' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% bootstrap_form feedback_form %}
-                <button class="btn btn-info">
+                <button class="btn btn-secondary">
                   Отправить
                 </button>
               </form>
             </div>
           </div>
-        <div class="col-lg-9 col-md-10"><br>
+        <div class="col-lg-8 col-md-9"><br>
           {% block content %}
           {% endblock %}
-          <br>
         </div>
       </div>
       {% endblock %}
     </div>
+    <br>
         <!-- Footer -->
         <footer>
         	<div class="footer-bottom">

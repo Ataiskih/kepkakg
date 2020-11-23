@@ -2,7 +2,12 @@ from django.db import models
 from base.models import BaseAbstractModel
 
 
-class Product(BaseAbstractModel):
+class Product(models.Model):
+    name = models.CharField(
+        max_length=255,
+        blank=True, null=True,
+        verbose_name='Название'
+    )
     main_image = models.ImageField(
         default='/product_images_main/default_main_photo.png/',
         upload_to='product_images_main',
@@ -67,6 +72,14 @@ class Product(BaseAbstractModel):
         blank=True,
         verbose_name="Категория"
     )
+    created = models.DateField(
+        auto_now_add=True,
+        verbose_name='Дата создания'
+    )
+    deleted = models.BooleanField(
+        default=False,
+        verbose_name='Удален'
+    )
 
     class Meta:
         verbose_name = "Товар"
@@ -75,6 +88,15 @@ class Product(BaseAbstractModel):
 
     def __str__(self):
         return self.name
+    
+    @property
+    def imageURL(self):
+        try:
+            url = self.main_image.url
+        except:
+            url = ''
+        return url
+
 
 
 class ProductAdditionalImages(models.Model):
