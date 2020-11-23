@@ -3,9 +3,17 @@
 {% load static %}
 
 {% block content %}
-    {% if request.user == user  %}
+    <div class="box-element">
+        <div class="cart-row">
+            <div style="flex:1"></div>
+            <div style="flex:1"><strong>Дата заказа</strong></div>
+            <div style="flex:1"><strong>Сумма</strong></div>
+        </div>
         {% for order in orders %}
-            {{ order.id }}
+        <div class="cart-row">
+            <div style="flex:1"><p>{{ order.order_date }}</p></div>
+            <div style="flex:1"><p>{{ order.get_cart_total }} сом</p></div>
+        </div>
         {% endfor %}
-    {% endif %}
+    </div>
 {% endblock %}

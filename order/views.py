@@ -82,13 +82,13 @@ def info(request):
     return render(request, 'info.html')
 
 
-def ordersList(request, id):
+def ordersList(request):
 	data = cartData(request)
 	cartItems = data['cartItems']
-	orders_db = Order.objects.all()
-	customer = Customer.objects.get(id=id)
-	orders = customer.customer_orders # 2 3 4
-	print(orders) # <QuerySet [<Order: Order object (2)>, <Order: Order object (3)>, <Order: Order object (4)>]>
-	print([order.order_date for order in orders]) # [datetime.datetime(2020, 11, 22, 12, 19, 43, 357439, tzinfo=<UTC>), datetime.datetime(2020, 11, 22, 22, 43, 39, 734938, tzinfo=<UTC>), datetime.datetime(2020, 11, 22, 22, 43, 43, 688649, tzinfo=<UTC>)]
-	context = {'cartItems':cartItems, 'orders': orders}
-	return render(request, 'orders_list.html', context)
+
+	if request.user.is_authenticated:
+		customer = request.user.customer
+		# customer = Customer.objects.get(request.user.customer)
+		orders = customer.customer_orders
+		context = {'cartItems':cartItems, 'orders': orders}
+		return render(request, 'orders_list.html', context)

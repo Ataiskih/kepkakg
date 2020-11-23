@@ -14,6 +14,9 @@ class Customer(models.Model):
     name = models.CharField(max_length=255, null=True)
     phone_number = models.CharField(max_length=30, null=True, blank=True)
     email = models.EmailField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
     
     @property
     def customer_orders(self):
@@ -30,6 +33,9 @@ class Order(models.Model):
     complete = models.BooleanField(default=False)
     order_date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return str(self.id)
+
     @property
     def get_cart_total(self):
         orderitems = self.orderitem_set.all()
@@ -41,6 +47,7 @@ class Order(models.Model):
         orderitems = self.orderitem_set.all()
         total = sum([item.quantity for item in orderitems])
         return total
+    
 
 
 class OrderItem(models.Model):
