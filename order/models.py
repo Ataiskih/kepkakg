@@ -25,6 +25,9 @@ class Order(models.Model):
     complete = models.BooleanField(default=False)
     order_date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return str(self.id)
+
     @property
     def get_cart_total(self):
         orderitems = self.orderitem_set.all()
@@ -45,6 +48,11 @@ class Order(models.Model):
             if i.product.digital == False:
                 shipping = True
         return shipping
+    
+    @property
+    def address(self):
+        shipping_info = self.shipping_set.all()
+        return shipping_info[0]
     
 
 

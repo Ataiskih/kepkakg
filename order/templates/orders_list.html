@@ -13,16 +13,16 @@
           <tr>
             <th scope="col">Дата и время заказа</th>
             <th scope="col">Сумма</th>
+            <th scope="col">Адрес</th>
           </tr>
         </thead>
         <tbody>
             {% for order in orders %}
-            {% if order.complete %}
                   <tr>
                     <td>{{ order.order_date }}</td>
-                    <td>{{ order.get_cart_total }} сом</td>
+                    <td>{{ order.get_cart_total| floatformat }} сом</td>
+                    <td>{{ order.address }} </td>
                 </tr>
-                {% endif %}
             {% endfor %}
     </table>
 {% endblock %}

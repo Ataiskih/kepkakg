@@ -2,4 +2,3 @@ __pycache__
 /media/
 /.idea
 base/keys.py
-db.sqlite3

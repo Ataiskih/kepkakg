@@ -91,6 +91,8 @@ def ordersList(request):
 		orders = Order.objects.filter(
 			customer=customer,
 			complete=True)
+		# for order in orders:
+		# 	items = order.orderitem_set.all()
 		context = {'cartItems':cartItems, 'orders': orders}
 		return render(request, 'orders_list.html', context)
 	else:
