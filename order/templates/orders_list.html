@@ -3,10 +3,15 @@
 {% load static %}
 
 {% block content %}
+  <div class="container-fluid">
+    {% if message %}
+      <h3 class="alert alert-success">{{ message }}</h3>
+    {% endif %}
+  </div>
     <table class="table table-striped">
         <thead>
           <tr>
-            <th scope="col">Дата заказа</th>
+            <th scope="col">Дата и время заказа</th>
             <th scope="col">Сумма</th>
           </tr>
         </thead>

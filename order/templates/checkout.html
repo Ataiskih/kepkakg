@@ -19,7 +19,7 @@
                     
                     <div id="shipping-info">
                         <hr>
-                        <p>Адрес</p>
+                        <p>Адрес доставки</p>
                         <hr>
                         <div class="form-field">
                             <input class="form-control" type="text" name="address" placeholder="Адрес">
@@ -50,7 +50,7 @@
                 <div class="cart-row">
                     <div style="flex:2"><img class="row-image" src="{{ item.product.imageURL }}"></div>
                     <div style="flex:2"><p>{{item.product.name}}</p></div>
-                    <div style="flex:1"><p>{{item.product.old_price}} сом</p></div>
+                    <div style="flex:1"><p>{{item.product.old_price}}</p></div>
                     <div style="flex:1"><p>x{{item.quantity}}</p></div>
                 </div>
                 {% endfor %}
@@ -92,11 +92,15 @@
 
     var shipping = '{{order.shipping}}'
 
+    if (shipping == 'False'){
+        document.getElementById('shipping-info').innerHTML = ''
+    }
+
     if (user != 'AnonymousUser'){
         document.getElementById('user-info').innerHTML = ''
     }
 
-    if (shipping && user != 'AnonymousUser'){
+    if (shipping == 'False' && user != 'AnonymousUser'){
         document.getElementById('form-wrapped').classList.add("hidden");
         // показывать, если вошел и хочет заказать товар с shipping = false
         document.getElementById('payment-info').classList.add("hidden");
@@ -131,7 +135,7 @@
                 'address':null,
             }
 
-            if (shipping){
+            if (shipping != 'False'){
                 shippingInfo.address = form.address.value
             }
 

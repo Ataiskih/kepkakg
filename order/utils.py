@@ -4,37 +4,41 @@ from product.models import Product
 
 
 def cookieCart(request):
-    # создаем корзину для non-logged-in юзера
-    try:
-        cart = json.loads(request.COOKIES['cart'])
-    except:
-        cart = {}
+	# создаем корзину для non-logged-in юзера
+	try:
+		cart = json.loads(request.COOKIES['cart'])
+	except:
+		cart = {}
 
-    items = []
-    order = {'get_cart_total':0, 'get_cart_items':0}
-    cartItems = order['get_cart_items']
+	items = []
+	order = {'get_cart_total':0, 'get_cart_items':0}
+	cartItems = order['get_cart_items']
 
-    for i in cart:
-        try:
-            cartItems += cart[i]['quantity'] # число товаров в корзине
+	for i in cart:
+		try:
+			cartItems += cart[i]['quantity'] # число товаров в корзине
 
-            product = Product.objects.get(id=i)
-            total = (product.old_price * cart[i]['quantity'])
+			product = Product.objects.get(id=i)
+			total = (product.old_price * cart[i]['quantity'])
 
-            order['get_cart_total'] += total
-            order['get_cart_items'] += cart[i]['quantity']
+			order['get_cart_total'] += total
+			order['get_cart_items'] += cart[i]['quantity']
 
-            item = {
+			item = {
 				'id':product.id,
-				'product':{'id':product.id,'name':product.name, 'price':product.old_price, 
-				'image':product.main_image}, 'quantity':cart[i]['quantity'],
-				'get_total':total,
-                }
-            items.append(item)
-        except:
-            pass # если продукта по каким-то причинам нет в бд, ошибка выдаваться не будет
-    
-    return {'cartItems':cartItems, 'order':order, 'items':items}
+				'product':{'id':product.id,'name':product.name, 'old_price':product.old_price, 
+				'imageURL':product.imageURL}, 'quantity':cart[i]['quantity'],
+				'digital':product.digital, 'get_total':total,
+				}
+			items.append(item)
+
+			if product.digital == False:
+				order['shipping'] = True
+
+		except:
+			pass # если продукта по каким-то причинам нет в бд, ошибка выдаваться не будет
+	
+	return {'cartItems':cartItems, 'order':order, 'items':items}
 
 
 def cartData(request):

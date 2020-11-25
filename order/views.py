@@ -68,7 +68,7 @@ def processOrder(request):
 		order.complete = True
 	order.save()
 
-	if order.shipping:
+	if order.shipping == True:
 		Shipping.objects.create(
 			customer=customer,
 			order=order,
@@ -85,9 +85,16 @@ def info(request):
 def ordersList(request):
 	data = cartData(request)
 	cartItems = data['cartItems']
-
+	
 	if request.user.is_authenticated:
 		customer = request.user.customer
-		orders = customer.customer_orders
+		orders = Order.objects.filter(
+			customer=customer,
+			complete=True)
 		context = {'cartItems':cartItems, 'orders': orders}
 		return render(request, 'orders_list.html', context)
+	else:
+		context = {}
+		context['type'] = 'danger'
+		context['message'] = 'Пользователь не найден'
+		return render(request, 'product/message.html', context)

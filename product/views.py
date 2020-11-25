@@ -36,7 +36,7 @@ def product(request, pk):
     except:
         context['type'] = 'danger'
         context['message'] = 'Не найдено'
-        return render(request, 'message.html', context)
+        return render(request, 'product/message.html', context)
 
     return render(request, 'product/product.html', context)
 

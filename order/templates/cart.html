@@ -18,7 +18,6 @@
 						</th>
 					</tr>
                 </table>
-            <hr>
             </div>
 			<br>
 			<div class="box-element">
@@ -32,8 +31,8 @@
 				{% for item in items %}
 				<div class="cart-row">
 					<div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
-					<div style="flex:2"><p>{{item.product.name}}</p></div>
-					<div style="flex:1"><p>{{item.product.old_price}} сом</p></div>
+					<div style="flex:2"><p>{{ item.product.name }}</p></div>
+					<div style="flex:1"><p>{{ item.product.old_price|floatformat }} сом</p></div>
 					<div style="flex:1">
 						<p class="quantity">{{item.quantity}}</p>
 						<div class="quantity">

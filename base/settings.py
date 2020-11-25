@@ -161,6 +161,7 @@ STATICFILES_DIRS = [
     BASE_DIR / 'templates/static/',
     BASE_DIR / 'product/static/',
     BASE_DIR / 'user_profiles/static/',
+    BASE_DIR / 'order/static/',
 ]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

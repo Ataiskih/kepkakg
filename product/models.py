@@ -44,6 +44,7 @@ class Product(models.Model):
         decimal_places=2,
         verbose_name='Себестоимость'
     )
+    digital = models.BooleanField(default=False,null=True, blank=True)
     quantity_in_warehouse = models.IntegerField(
         default=0,
         verbose_name='Колличество на на складе'

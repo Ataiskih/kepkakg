@@ -1,43 +1,47 @@
 {% extends 'index.html' %}
 {% load bootstrap4 %}
+
 {% block content %}
-<div class="container-fluid">
-    {% if message %}
-      <h3 class="alert alert-success">{{ message }}</h3>
-    {% endif %}
-</div>
-<div class="row">
-    <div class="col-lg-1 col-md-1 col-sm-12">
+    <div class="container-fluid">
+        {% if message %}
+        <h3 class="alert alert-success">{{ message }}</h3>
+        {% endif %}
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-12">
-            <div>
-                <img src="{{ product.imageURL }}" width="300px">
-            </div>
-    </div>
-    <div class="col-lg-5 col-md-5 col-sm-12">
-        <h4>{{ product.name }}
-        <h4>{{ product.old_price }} сом</h4>
-        <button data-product="{{product.id}}" data-action="add" class="btn btn-secondary btn-success add-btn update-cart">Добавить в корзину</button>
-        <div>
-            {{ product.description|linebreaks }}
+    <div class="row">
+        <div class="col-lg-1 col-md-1 col-sm-12">
         </div>
-        
-        {% for ch in all_characteristic %}
+        <div class="col-lg-6 col-md-6 col-sm-12">
+                <div>
+                    <img src="{{ product.imageURL }}" width="300px">
+                </div>
+        </div>
+        <div class="col-lg-5 col-md-5 col-sm-12">
+            <h4>{{ product.name }}
+            <h4>{{ product.old_price }} сом</h4>
+            <br>
+            <button data-product="{{product.id}}" data-action="add" class="btn btn-secondary btn-success add-btn update-cart">Добавить в корзину</button>
+            <br>
+            <br>
             <div>
-                Цвет: {{ ch.color }}
-            </div> 
-            <div> 
-                Размеры: {{ ch.size }}
+                {{ product.description|linebreaks }}
             </div>
-            <div>
-                Материал: {{ ch.material }}
-            </div> 
+            
+            {% for ch in all_characteristic %}
+                <div>
+                    Цвет: {{ ch.color }}
+                </div> 
+                <div> 
+                    Размеры: {{ ch.size }}
+                </div>
+                <div>
+                    Материал: {{ ch.material }}
+                </div> 
+            {% endfor %}
+        </div>
+    </div>
+    <div>
+        {% for add_image in add_images %}
+            <img src="{{ add_image.addentional_images.url }}" width="200px">
         {% endfor %}
     </div>
-</div>
-<div>
-    {% for add_image in add_images %}
-        <img src="{{ add_image.addentional_images.url }}" width="200px">
-    {% endfor %}
-</div>
 {% endblock %}

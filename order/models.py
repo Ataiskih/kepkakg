@@ -15,14 +15,6 @@ class Customer(models.Model):
     phone_number = models.CharField(max_length=30, null=True, blank=True)
     email = models.EmailField(max_length=255, null=True, blank=True)
 
-    def __str__(self):
-        return self.name
-    
-    @property
-    def customer_orders(self):
-        orders = self.order_set.all()
-        return orders
-
 
 class Order(models.Model):
     customer = models.ForeignKey(
@@ -32,9 +24,6 @@ class Order(models.Model):
         )
     complete = models.BooleanField(default=False)
     order_date = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return str(self.id)
 
     @property
     def get_cart_total(self):
@@ -47,6 +36,15 @@ class Order(models.Model):
         orderitems = self.orderitem_set.all()
         total = sum([item.quantity for item in orderitems])
         return total
+    
+    @property
+    def shipping(self):
+        shipping = False
+        orderitems = self.orderitem_set.all()
+        for i in orderitems:
+            if i.product.digital == False:
+                shipping = True
+        return shipping
     
 
 
@@ -61,7 +59,11 @@ class OrderItem(models.Model):
         null=True,
         on_delete=models.SET_NULL
         )
-    quantity = models.IntegerField(default=0)
+    quantity = models.IntegerField(
+        default=0,
+        null=True,
+        blank=True
+        )
 
     @property
     def get_total(self):
@@ -81,6 +83,9 @@ class Shipping(models.Model):
         on_delete = models.SET_NULL
         )
     address = models.CharField(max_length=255, null=True)
+
+    def __str__(self):
+        return self.address
 
 
 def create_customer(sender, instance, created, **kwargs):
