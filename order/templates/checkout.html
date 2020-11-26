@@ -147,25 +147,29 @@
             console.log('Shipping Info:', shippingInfo)
             console.log('User Info:', userFormData)
 
-            var url = "/process_order/"
+            var url = '/order/process_order/'
+
             fetch(url, {
                 method:'POST',
                 headers:{
                     'Content-Type':'applicaiton/json',
                     'X-CSRFToken':csrftoken,
+                    // 'Authentication': token,
                 }, 
                 body:JSON.stringify({'form':userFormData, 'shipping':shippingInfo}),
             })
             .then((response) => response.json())
             .then((data) => {
-                console.log('Success:', data);
+                console.log('Success cartt:', cart);
                 alert('Transaction completed');
-
+                
                 cart = {}
+                
                 document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
-                window.location.href = "{% url 'checkout' %}"
+                window.location.href = "{% url 'products' %}"
 
             })
+            .catch(e=> console.log(`error: ${e}`))
         }
 </script>
 

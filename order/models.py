@@ -55,7 +55,6 @@ class Order(models.Model):
         return shipping_info[0]
     
 
-
 class OrderItem(models.Model):
     product = models.ForeignKey(
         to=Product,

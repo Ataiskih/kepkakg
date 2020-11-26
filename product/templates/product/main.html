@@ -11,7 +11,7 @@
   <div class="container-fluid text-center bg-grey">
       <div class="row text-center">
       {% for obj in filter.qs %}
-        <div class="col-sm-4">
+        <div class="col-sm-3">
           <div class="thumbnail">
             <a href="{% url 'product_detail' obj.id %}">
             <img src="{{ obj.imageURL }}" width="150px">

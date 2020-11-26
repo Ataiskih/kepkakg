@@ -29,14 +29,18 @@ def checkout(request):
 
 def updateItem(request):
 	data = json.loads(request.body)
+	print(data)
+	
 	productId = data['productId']
 	action = data['action']
 	print('Action:', action)
 	print('Product:', productId)
 
-	customer = request.user.customer
+
+	customer = request.user.is_authenticated
 	product = Product.objects.get(id=productId)
 	order, created = Order.objects.get_or_create(customer=customer, complete=False)
+	print(created)
 
 	orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
 
@@ -50,6 +54,8 @@ def updateItem(request):
 	if orderItem.quantity <= 0:
 		orderItem.delete()
 
+		
+
 	return JsonResponse('Item was added', safe=False)
 
 
@@ -62,9 +68,9 @@ def processOrder(request):
 	else:
 		customer, order = guestOrder(request, data)
 
-	total = float(data['form']['total']) # checkout.html 100 строка
+	total = (data['form']['total']) # checkout.html 100 строка
 
-	if total == float(order.get_cart_total):
+	if total == (order.get_cart_total):
 		order.complete = True
 	order.save()
 
@@ -79,7 +85,11 @@ def processOrder(request):
 
 
 def info(request):
-    return render(request, 'info.html')
+	data = cartData(request)
+	cartItems = data['cartItems']
+	context = {'cartItems':cartItems}
+
+	return render(request, 'info.html', context)
 
 
 def ordersList(request):
@@ -91,8 +101,7 @@ def ordersList(request):
 		orders = Order.objects.filter(
 			customer=customer,
 			complete=True)
-		# for order in orders:
-		# 	items = order.orderitem_set.all()
+
 		context = {'cartItems':cartItems, 'orders': orders}
 		return render(request, 'orders_list.html', context)
 	else:

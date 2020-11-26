@@ -19,7 +19,7 @@ for (i = 0; i < updateBtns.length; i++) {
 function updateUserOrder(productId, action){
 	console.log('User is authenticated, sending data...')
 
-	var url = '/update_item/'
+	var url = '/order/update_item/'
 
 	fetch(url, {
 		method:'POST',
@@ -27,7 +27,7 @@ function updateUserOrder(productId, action){
 			'Content-Type':'application/json',
 			'X-CSRFToken':csrftoken,
 		}, 
-		body:JSON.stringify({'productId':productId, 'action':action})
+		body:JSON.stringify({productId:productId, action:action})
 	})
 
 	.then((response) => {
@@ -59,7 +59,6 @@ function addCookieItem(productId, action){
 			delete cart[productId];
 		}
 	}
-	console.log('CART:', cart)
 	document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
 	location.reload()
 }
